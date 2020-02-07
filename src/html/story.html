@@ -9,7 +9,7 @@
     <script src="../dedalus.js"></script>
     <script src="../dedalus-web.js"></script>
 
-    <link rel="stylesheet" href="themes/plain/story.css">
+    <link rel="stylesheet" href="themes/nix/story.css">
 
  </head>
 <body>
@@ -37,7 +37,7 @@
         </afterEveryParagraphShown>
 
         <!-- Novel -->
-        <title>Empty story</title>
+        <title>A Tale of Oreo</title>
 
         <!-- Objects -->
         <obj id="dummyObject" inventoryName="An object">
@@ -55,21 +55,67 @@
 
         <!-- Pages -->
         <page id="intro">
-            You are about to experience the most amazing empty story ever...
+            ** Blackness fades away into a hint of light, you see a man, bound up in a cart staring straight at you. **
         </page>
 
         <page id="dummyPage" class="first">
-            You are in an empty page except for a <show paragraph="dummyParagraph">paragraph</show>.
+            (Mystery Man) <br>
+            Hey you! you're finally awake!<br>
+            <br>
+            You were trying to cross the border right?<br>
+            Walked right into that ambush, like that thief over there...
+            <br><br><br>
+
+            Who are you?
+            <br><br>
+            (Hero) <br>
+            * I'm <turn to="pgXena1">Xena The Warrior Priestess</turn>.<br>
+            * I'm <turn to="xXxPussySlayer69xXx1">xXxPussySlayer69xXx The Edgelord</turn>.<br>
+            * I'm <turn to="Pitz1">Pitz The Evil Rouge</turn>.<br>
 
             <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
 
             <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p>
 
-            <paragraph id="dummyParagraph">
-                Seiously, What did you expect?
+            
+        </page>
+
+        <page id="pgXena1">
+           <show paragraph="carFly">An ominous feeling takes hold</show>.
+            <paragraph id="carFly">
+                ** Suddenly a rumble in the distance, you hear a mighty roar.<br>
+                The ground shakes as a large shadow engulfs the cart.<br>
+                <br>
+                You barely have time to shield your face as the cart goes flying off of the trail and you go hurling through space.**<br>
+                <show paragraph="pXena1">...</turn>
+            </paragraph>
+            <paragraph id="pXena1">
+                You quickly murmur a spell to soak most of the damage from the landing.<br>
+                <show paragraph="pXena2">...</turn>
+            </paragraph>
+            <paragraph id="pXena2">
+                You're lucky, the spell works well and while the others around you crash horribly, you are saved from most of the damage.<br>
+                You pick yourself up and think, what to do? <br>
+                You are in a thick forest, there are many items strewn around you, yet you hear the roar of the beast not too far away.<br>
+                Should you <turn to="lookAroundForestXena">risk a look around</turn>, <turn to="pgXena2">run deeper into the woods</turn> or turn back and <turn to="FightWoodsBeastXena">face the creature</turn> that attacked?
             </paragraph>
         </page>
 
+        <page id="FightWoodsBeastXena">
+            You steel yourself, years of training at the temple were not for nothing, you mumble a reinforcing spell, pick up a sword from the shattered ruins of the cart and walk carefully towards the roars.<br>
+            <turn to="deathByBeast">...</turn>
+        </page>
+
+        <page id="deathByBeast">
+           You scramble to free yourself of the vines as you walk near the edge of the forest, you can see the beast's shadow between the leaves.<br>
+           <br>
+           As soon as you clear the forest and you lay eyes on the beast a deafening roar hits your face and you smell the stench of death from within it's maw.<br>
+           Blinded and stunned by the beast your courage wavers.
+           <br>
+           You try to retreat through the thicket you came from but you stumble and get trapped.<br><br>
+           Within seconds the beast is upon you and the last thing you hear is the strange sound of a voice you did not know you had uttering a short whimper.
+           {{ story.endGame(); }} 
+        </page>
         <page id="otherPage">
             Plot twist! The story ends abruptly.
             {{ story.endGame(); }}
