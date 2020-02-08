@@ -132,6 +132,8 @@ var DedalusWeb;
                 }
 
             });
+            console.log(self.domTarget)
+            // console.log(this.domTarget)
         }
 
         // Convert <turn to> (turn page action)
@@ -355,7 +357,8 @@ var DedalusWeb;
 
     DedalusWeb.prototype.disable = function (id) {
         // Substitute the matched <a> with a <span> remembering the click function
-        var element = this.domTarget.find('a[data-id="' + id + '"]'),
+        var self = this;
+        var element = self.domTarget.find('a[data-id="' + id + '"]'),
             elementDom,
             spanElement,
             originalClickFn;

@@ -8,7 +8,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="../dedalus.js"></script>
     <script src="../dedalus-web.js"></script>
-
+    <script src="../taleOfOreo.js"></script>
     <link rel="stylesheet" href="themes/nix/story.css">
 
  </head>
@@ -16,12 +16,23 @@
     <div id="story">
 
         <initscript>
+            story.toDisable = []
+            story.currChar = "Xena";
+            story.isCurrChar = function(c) {
+                return c === story.currChar;
+            };
+            story.getPageChar = function(pg){
+                return pg + story.currChar;
+            };
         </initscript>
 
         <beforeEveryThing>
+            
         </beforeEveryThing>
 
         <beforeEveryPageTurn>
+            for(var dis in story.toDisable)
+                story.disable(dis);
         </beforeEveryPageTurn>
 
         <beforeEveryParagraphShown>
@@ -40,86 +51,135 @@
         <title>A Tale of Oreo</title>
 
         <!-- Objects -->
-        <obj id="dummyObject" inventoryName="An object">
+        <obj id="steelSword" inventoryName="Steel Sword">
             <action id="Examine">
-                Something happens... who knows what?!
+                ** Looks like a standard steel sword, it's a bit damaged from the crash but is in usable condition. **
             </action>
 
             <action id="Get">
-                <when>!story.isInInventory('dummyObject')</when>
-                As you try to get it... It is clear that the inventory works!
-                {{ story.putInInventory('dummyObject'); }}
+                <when>!story.isInInventory('steelSword')</when>
+                * Placed in sheath. *
+                {{ story.putInInventory('steelSword'); }}
+            
             </action>
 
         </obj>
 
         <!-- Pages -->
         <page id="intro">
-            ** Blackness fades away into a hint of light, you see a man, bound up in a cart staring straight at you. **
+            ** Blackness fades away into a hint of light, you see a man, sitting bound up in the cart staring straight at you. **
         </page>
 
-        <page id="dummyPage" class="first">
+        <page id="start" class="first">
             (Mystery Man) <br>
-            Hey you! you're finally awake!<br>
+            Hey you! You're finally awake!<br>
             <br>
-            You were trying to cross the border right?<br>
+            You were trying to cross the border, right?<br>
             Walked right into that ambush, like that thief over there...
             <br><br><br>
-
-            Who are you?
+            {{ story.toDisable +='pg1Xena'; }}
+            My name is Gerald of Rivia, who are you?
             <br><br>
             (Hero) <br>
-            * I'm <turn to="pgXena1">Xena The Warrior Priestess</turn>.<br>
+            * I'm <turn to="pg1Xena">Xena The Warrior Priestess</turn>.<br>
             * I'm <turn to="xXxPussySlayer69xXx1">xXxPussySlayer69xXx The Edgelord</turn>.<br>
             * I'm <turn to="Pitz1">Pitz The Evil Rouge</turn>.<br>
+            {{ story.disable('pg1Xena'); }}
+        </page>
+        <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
+        <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
 
-            <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
-
-            <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p>
-
+        <!-- Forest -->
+        <page id="pg1Xena">
+            {{story.currChar = "Xena";}}
+            An ominous feeling takes hold.<br>
+           <show paragraph="cartFly">...</show>
+            
+            <paragraph id="p1Xena">
+                You quickly murmur a spell to soak most of the damage from the landing.<br>
+                <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
+            </paragraph>
+            <paragraph id="p2Xena">
+                You're lucky, the spell works well and while the others around you crash horribly, you are saved from most of the damage.<br>
+                <show paragraph="startp1">...</show>
+            </paragraph>
             
         </page>
 
-        <page id="pgXena1">
-           <show paragraph="carFly">An ominous feeling takes hold</show>.
-            <paragraph id="carFly">
-                ** Suddenly a rumble in the distance, you hear a mighty roar.<br>
-                The ground shakes as a large shadow engulfs the cart.<br>
-                <br>
-                You barely have time to shield your face as the cart goes flying off of the trail and you go hurling through space.**<br>
-                <show paragraph="pXena1">...</turn>
-            </paragraph>
-            <paragraph id="pXena1">
-                You quickly murmur a spell to soak most of the damage from the landing.<br>
-                <show paragraph="pXena2">...</turn>
-            </paragraph>
-            <paragraph id="pXena2">
-                You're lucky, the spell works well and while the others around you crash horribly, you are saved from most of the damage.<br>
-                You pick yourself up and think, what to do? <br>
-                You are in a thick forest, there are many items strewn around you, yet you hear the roar of the beast not too far away.<br>
-                Should you <turn to="lookAroundForestXena">risk a look around</turn>, <turn to="pgXena2">run deeper into the woods</turn> or turn back and <turn to="FightWoodsBeastXena">face the creature</turn> that attacked?
-            </paragraph>
+        <page id="landForest">
+            You are in a thick forest, there are many items strewn around you, yet you hear the roar of the beast not too far away.<br>
+            Should you <turn to="{{= story.getPageChar('lookAroundForest') }}">risk a look around</turn>, 
+            <turn to="{{= story.getPageChar('pg2') }}">run deeper into the woods</turn> or turn back and 
+            <turn to="{{= story.getPageChar('FightWoodsBeast') }}">face the creature</turn> that attacked?
+        </page>
+
+        <page id="lookAroundForestXena">
+            <p>On the ground around you, you can spot a <interact with="steelSword">sword</interact>, there are also the people from the cart, maybe you should <show paragraph="forestCheckAlive1">check if they're still alive</show>.</p>
         </page>
 
         <page id="FightWoodsBeastXena">
             You steel yourself, years of training at the temple were not for nothing, you mumble a reinforcing spell, pick up a sword from the shattered ruins of the cart and walk carefully towards the roars.<br>
-            <turn to="deathByBeast">...</turn>
+            <turn to="deathByBeast">Draw sword and press on...</turn>
         </page>
 
         <page id="deathByBeast">
            You scramble to free yourself of the vines as you walk near the edge of the forest, you can see the beast's shadow between the leaves.<br>
            <br>
-           As soon as you clear the forest and you lay eyes on the beast a deafening roar hits your face and you smell the stench of death from within it's maw.<br>
+           As soon as you clear the forest and lay eyes on the towering beast a deafening roar hits your face and you smell the stench of death from within it's maw.<br>
            Blinded and stunned by the beast your courage wavers.
            <br>
            You try to retreat through the thicket you came from but you stumble and get trapped.<br><br>
-           Within seconds the beast is upon you and the last thing you hear is the strange sound of a voice you did not know you had uttering a short whimper.
+           Within seconds the beast is upon you and the last thing you hear is a strange voice you did not know you had uttering a short whimper.
            {{ story.endGame(); }} 
         </page>
-        <page id="otherPage">
-            Plot twist! The story ends abruptly.
-            {{ story.endGame(); }}
-        </page>
+
+        <!-- Global Paragraphs -->
+        <paragraph id="startp1">
+            You pick yourself up and think, what to do? <br>
+            <turn to="landForest">...</turn>
+        </paragraph>
+
+        <paragraph id="forestCheckAlive1">
+            At first glance it appears everyone is dead, however you brave forward to make sure. <br>
+            ** Groan **<br>
+            You quickly turn around to see Gerald of Rivia slightly moving.<br>
+            Come closer he rasps to you.<br>
+            <show paragraph="forestCheckAlive2">...</show>
+        </paragraph>
+
+        <paragraph id="forestCheckAlive2">
+            
+            You lean closer and turn him on his back. <br>
+            ** Cough ** <br>
+            You can hear his uneven breath and see the blood coming from his mouth, a tree branch is stuck mere inches from his heart halfway impaling him.<br>
+            {{? story.isCurrChar('Xena') }}
+            You mumble a spell to help ease his suffering, nothing else could help him anymore...<br>
+            {{?}}
+            Listen to me {{= story.currChar }}, I knew who you were when first I saw you. <br>
+            ** Cough Cough ** <br>
+            You must find your destiny!<br>
+            <show paragraph="forestDestiny">...</turn>
+        </paragraph>
+
+        <paragraph id="forestDestiny">
+            The Master Terraformer, he is your destiny! <br>
+            <br>
+            ** Wheeze ** <br>
+            You can see that Gerald does not have much strength left in him, you try and still him, but he speaks louder now. <br>
+            <br>
+            Remember, you must find him! The man on the surfboard, he is your destiny!!<br>
+            <br>
+            You stay with him in his final moment and then <turn to="landForest">get up</turn>, there's nothing left for you here.
+        </paragraph>
+
+        <paragraph id="cartFly">
+            Suddenly, a rumble in the distance, you hear a mighty roar.<br>
+            The ground shakes as a large shadow engulfs the cart.<br>
+            <br>
+            You barely have time to shield your face as the cart goes flying off of the trail and you go hurling through space.<br>
+
+            <show paragraph="{{= story.getPageChar('p1') }}">...</turn>
+        </paragraph>
 
     </div>
 

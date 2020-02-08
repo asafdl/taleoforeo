@@ -447,7 +447,8 @@ var Dedalus,
      */
     Dedalus.prototype.showParagraph = function (target) {
         var paragraphToPrint = this.getParagraph(target),
-            content          = paragraphToPrint.content;
+        content          = paragraphToPrint.content;
+
 
         this.executeBeforeEveryParagraphShown();
 
@@ -847,7 +848,9 @@ var Dedalus,
      * restored by Dedalus.prototype.enable()
      * @param  {jQUery} element Link to be disabled
      */
-    Dedalus.prototype.disable = function (element) {};
+    Dedalus.prototype.disable = function (element) {
+        console.log(element)
+    };
 
     /**
      * Implementation specific method to revert a previously disabled interactive
