@@ -16,7 +16,8 @@
     <div id="story">
 
         <initscript>
-            story.toDisable = []
+            story.toDisable = [];
+            story.hasWep = false;
             story.currChar = "Xena";
             story.isCurrChar = function(c) {
                 return c === story.currChar;
@@ -31,8 +32,6 @@
         </beforeEveryThing>
 
         <beforeEveryPageTurn>
-            for(var dis in story.toDisable)
-                story.disable(dis);
         </beforeEveryPageTurn>
 
         <beforeEveryParagraphShown>
@@ -60,6 +59,7 @@
                 <when>!story.isInInventory('steelSword')</when>
                 * Placed in sheath. *
                 {{ story.putInInventory('steelSword'); }}
+                {{story.hasWep = true;}}
             
             </action>
 
@@ -77,14 +77,12 @@
             You were trying to cross the border, right?<br>
             Walked right into that ambush, like that thief over there...
             <br><br><br>
-            {{ story.toDisable +='pg1Xena'; }}
             My name is Gerald of Rivia, who are you?
             <br><br>
             (Hero) <br>
             * I'm <turn to="pg1Xena">Xena The Warrior Priestess</turn>.<br>
             * I'm <turn to="xXxPussySlayer69xXx1">xXxPussySlayer69xXx The Edgelord</turn>.<br>
             * I'm <turn to="Pitz1">Pitz The Evil Rouge</turn>.<br>
-            {{ story.disable('pg1Xena'); }}
         </page>
         <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
         <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
@@ -106,10 +104,26 @@
             
         </page>
 
+        <page id="intoForest">
+            The thick woods quickly mask the roars of the beast, and a calm quiet ensues. The woods are so thick that even the wind can't seem to breach the silence.<br>
+            You walk for a few hours, with no idea where you are anymore, the dense forest blocks out the sun, and all the trees look exactly alike.<br>
+            <br>
+            You finally hear something other than the silent forest, it sounds like running water nearby.<br>
+            You run your tongue over your dry lips and instinctively turn towards the sound of running water.<br>
+            <turn to="{{= story.getPageChar('MeetFairies') }}">...</turn>
+        </page>
+
+        <page id="MeetFairiesXena">
+            You follow the sound of water until you reach a small clearing with a creek of clear water flowing through it.<br>
+            You kneel down and take a few sips of the cool liquid.<br><br>
+
+            <show paragraph="ClearingFairies1">You hear bickering behind you...</show>
+        </page>
+
         <page id="landForest">
             You are in a thick forest, there are many items strewn around you, yet you hear the roar of the beast not too far away.<br>
             Should you <turn to="{{= story.getPageChar('lookAroundForest') }}">risk a look around</turn>, 
-            <turn to="{{= story.getPageChar('pg2') }}">run deeper into the woods</turn> or turn back and 
+            <turn to="intoForest">run deeper into the woods</turn> or turn back and 
             <turn to="{{= story.getPageChar('FightWoodsBeast') }}">face the creature</turn> that attacked?
         </page>
 
@@ -133,6 +147,48 @@
            {{ story.endGame(); }} 
         </page>
 
+        <page id="ClearingFairiesConvo1">
+            The male fairy bristles with indignation, he moves to charge at you but the female fairy holds him back.<br>
+            They start bickering again.<br><br>
+
+            Suddenly the male fairy breaks free from the females grasp and comes flying right at you.<br>
+            <show paragraph="fightFairies1">...</show>
+
+            <paragraph id="fightFairies1">
+                True to your word, you flatten your hand and swat at the tiny fairy.<br>
+                ** Duff **<br>
+                He crashes to the ground with a surprising big thud for such a small creature.<br>
+                <br>
+                The female fairy wails and flies quickly to her mate.
+                <show paragraph="fightFairies2">...</show>
+            </paragraph>
+            <paragraph id="fightFairies2">
+                I told you that would happen! When are you going to start listening to me? She admonishes him.<br><br>
+                You noticed that even though she is worried her mate is hurt, she is also clearly pleased with herself for being correct.<br>
+                <br>
+                Please don't attack us she pleads, we are only small forest fairies.<br>
+                Behind her you see her mate getting up, *little fucker got lucky* he mumbles...<br>
+                Clearly these beings are intelligent, you decide to <turn to="ClearingFairiesConvo2">see if they can help you</turn>.
+            </paragraph>
+        </page>
+
+        <page id="ClearingFairiesConvo2">
+            You decide to move the conversation to lighter grounds, you direct your words to the female fairy, as she doesn't seem like such a sociopath.<br>
+            <br>
+            ({{= story.currChar }})<br>
+            Hi, my name is {{= story.currChar}}, I'm lost in this forest. I could actually use your help.<br>
+            <br>
+            She flies in front of you and flashes you a charming smile.<br>
+            (Female Fairy)<br>
+            Pleased to meet you, my name is LentilSoup and the insensitive oaf behind me is Hamburger. Say hi Hamburger, don't embarrass me again!<br>
+            <br>
+            (Hamburger)<br>
+            Hello, asshole.<br>
+            <br>
+            LentilSoup flashes him an exasperated look...<br>
+
+        </page>
+
         <!-- Global Paragraphs -->
         <paragraph id="startp1">
             You pick yourself up and think, what to do? <br>
@@ -148,7 +204,6 @@
         </paragraph>
 
         <paragraph id="forestCheckAlive2">
-            
             You lean closer and turn him on his back. <br>
             ** Cough ** <br>
             You can hear his uneven breath and see the blood coming from his mouth, a tree branch is stuck mere inches from his heart halfway impaling him.<br>
@@ -179,6 +234,36 @@
             You barely have time to shield your face as the cart goes flying off of the trail and you go hurling through space.<br>
 
             <show paragraph="{{= story.getPageChar('p1') }}">...</turn>
+        </paragraph>
+
+        <paragraph id="ClearingFairies1">
+            You quickly turn around, 
+            {{? story.hasWep }}
+            and reach to draw your weapon from it's sheath.
+            {{??}}
+            and clench your fists to prepare for a fight.
+            {{?}}
+            <br>
+
+            You can see two small fairies arguing at the edge of the clearing looking worriedly at you.<br>
+            You walk over to them and as you get closer you notice that one is male and the other female.<br><br> 
+            The female is short (even for fairies) and has long black flowing hair, while the male is hairy with a black beard and silver stubble in his hair. <br>
+            <br>
+            They stop arguing as you approach and the female quickly hides behind the small hairy shoulders of the male.<br>
+            <show paragraph="ClearingFairies2">...</show>
+        </paragraph>
+
+        <paragraph id="ClearingFairies2">
+            The male puffs his chest and looks you down, raising his fists and a tiny voice he cries:<br>
+            (Male Fairy)<br>
+            Be gone from our clearing you overgrown cockhair!<br>
+            * You hesitate at the unexpected evil words coming from such a small creature.<br> *
+            You might be too retarded to understand, he continues, so I'll repeat it slower for you, Gooooooo Awaaaaayyyy Fartfaceeeeeeee!!<br>
+            We fairies possess powerful magic and can instantly turn you into a river frog, which in your case would be an improvement!<br><br>
+
+            ({{= story.currChar }})<br>
+            * <turn to="ClearingFairiesConvo1">I'll not be threatened by a 10cm little monkey, attack me and I'll swat you like a mosquito!</turn><br>
+            * <turn to="ClearingFairiesConvo2">I mean you no harm, I just came to get some water.</turn><br>
         </paragraph>
 
     </div>
