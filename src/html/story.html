@@ -18,7 +18,11 @@
         <initscript>
             story.toDisable = [];
             story.hasWep = false;
-            story.currChar = "Xena";
+            story.currChar = "Oreo";
+            story.forestSpiderDanger = 0;
+            story.isDeathBySpider = function(){
+                return story.forestSpiderDanger > 2
+            };
             story.isCurrChar = function(c) {
                 return c === story.currChar;
             };
@@ -80,28 +84,47 @@
             My name is Gerald of Rivia, who are you?
             <br><br>
             (Hero) <br>
-            * I'm <turn to="pg1Xena">Xena The Warrior Priestess</turn>.<br>
-            * I'm <turn to="xXxPussySlayer69xXx1">xXxPussySlayer69xXx The Edgelord</turn>.<br>
-            * I'm <turn to="Pitz1">Pitz The Evil Rouge</turn>.<br>
+            * I'm <turn to="pg1Oreo">Oreo The Warrior Priestess</turn>.<br>
+            * I'm <turn to="pg1Edge">xXxPussySlayer69xXx The Edgelord</turn>.<br>
+            * I'm <turn to="pg1Pitz">Pitz The Evil Rouge</turn>.<br>
         </page>
         <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
         <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
 
         <!-- Forest -->
-        <page id="pg1Xena">
-            {{story.currChar = "Xena";}}
+        <page id="pg1Oreo">
+            {{story.currChar = "Oreo";}}
             An ominous feeling takes hold.<br>
            <show paragraph="cartFly">...</show>
             
-            <paragraph id="p1Xena">
+            <paragraph id="p1Oreo">
                 You quickly murmur a spell to soak most of the damage from the landing.<br>
                 <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
             </paragraph>
-            <paragraph id="p2Xena">
+            <paragraph id="p2Oreo">
                 You're lucky, the spell works well and while the others around you crash horribly, you are saved from most of the damage.<br>
                 <show paragraph="startp1">...</show>
             </paragraph>
             
+        </page>
+        <page id="pg1Edge">
+            {{story.currChar = "Edge";}}
+            An ominous feeling takes hold.<br>
+           <show paragraph="cartFly">...</show>
+            
+            <paragraph id="p1Edge">
+                Ffffffuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu<br>
+                <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
+            </paragraph>
+            <paragraph id="p2Edge">
+                You crash horribly into a nearby tree breaking your back.<br>
+                <br>
+                "Fuck my life" are the last words that exit your mouth...<br>
+                <br>
+                <br>
+                You die.
+                {{ story.endGame(); }}
+            </paragraph>
         </page>
 
         <page id="intoForest">
@@ -113,38 +136,40 @@
             <turn to="{{= story.getPageChar('MeetFairies') }}">...</turn>
         </page>
 
-        <page id="MeetFairiesXena">
-            You follow the sound of water until you reach a small clearing with a creek of clear water flowing through it.<br>
-            You kneel down and take a few sips of the cool liquid.<br><br>
-
-            <show paragraph="ClearingFairies1">You hear bickering behind you...</show>
-        </page>
-
+        
         <page id="landForest">
             You are in a thick forest, there are many items strewn around you, yet you hear the roar of the beast not too far away.<br>
             Should you <turn to="{{= story.getPageChar('lookAroundForest') }}">risk a look around</turn>, 
             <turn to="intoForest">run deeper into the woods</turn> or turn back and 
             <turn to="{{= story.getPageChar('FightWoodsBeast') }}">face the creature</turn> that attacked?
         </page>
-
-        <page id="lookAroundForestXena">
+        
+        <page id="lookAroundForestOreo">
             <p>On the ground around you, you can spot a <interact with="steelSword">sword</interact>, there are also the people from the cart, maybe you should <show paragraph="forestCheckAlive1">check if they're still alive</show>.</p>
         </page>
-
-        <page id="FightWoodsBeastXena">
+        
+        <page id="FightWoodsBeastOreo">
             You steel yourself, years of training at the temple were not for nothing, you mumble a reinforcing spell, pick up a sword from the shattered ruins of the cart and walk carefully towards the roars.<br>
             <turn to="deathByBeast">Draw sword and press on...</turn>
         </page>
-
+        
         <page id="deathByBeast">
-           You scramble to free yourself of the vines as you walk near the edge of the forest, you can see the beast's shadow between the leaves.<br>
-           <br>
-           As soon as you clear the forest and lay eyes on the towering beast a deafening roar hits your face and you smell the stench of death from within it's maw.<br>
-           Blinded and stunned by the beast your courage wavers.
-           <br>
-           You try to retreat through the thicket you came from but you stumble and get trapped.<br><br>
-           Within seconds the beast is upon you and the last thing you hear is a strange voice you did not know you had uttering a short whimper.
-           {{ story.endGame(); }} 
+            You scramble to free yourself of the vines as you walk near the edge of the forest, you can see the beast's shadow between the leaves.<br>
+            <br>
+            As soon as you clear the forest and lay eyes on the towering beast a deafening roar hits your face and you smell the stench of death from within it's maw.<br>
+            Blinded and stunned by the beast your courage wavers.
+            <br>
+            You try to retreat through the thicket you came from but you stumble and get trapped.<br><br>
+            Within seconds the beast is upon you and the last thing you hear is a strange voice you did not know you had uttering a short whimper.
+            {{story.endGame();}} 
+        </page>
+
+        <!-- Fairies -->
+        <page id="MeetFairiesOreo">
+            You follow the sound of water until you reach a small clearing with a creek of clear water flowing through it.<br>
+            You kneel down and take a few sips of the cool liquid.<br><br>
+
+            <show paragraph="ClearingFairies1">You hear bickering behind you...</show>
         </page>
 
         <page id="ClearingFairiesConvo1">
@@ -197,11 +222,113 @@
                 <br>
                 Maybe... he mutters.<br>
                 * He has a troubled look on his face. *<br>
-
+                <show paragraph="fairiesStory2">...</show>
             </paragraph>
+            <paragraph id="fairiesStory2">
+                (Hamburger)<br>
+                We were just going out. Towards the temple, you should follow us {{= story.currChar }}.<br>
+                <br>
+                <br>
+                He turns around grabs LentilSoup, they start forward whispering amongst themselves in hushed voices,
+                you can make out the words *destiny* and something that sounds like *salafa(?)*, but they quickly get out of hearing range.
+                <br>
+                Hamburger turns around suddenly, "Come on fuckface!", he yells impatiently before hurrying forward.<br>
+                <br>
+                You can vaguely hear LentilSoup admonishing him for his foul language.<br>
+                You quickly <turn to="wayToTemple">hurry forward</turn> as to not lose the fairies.
+            </paragraph>
+        </page>
+        <!-- Temple -->
 
+        <page id="wayToTemple">
+            You catch up with the fairies with a bit of difficulty as they move very deftly through the forest.<br>
+            ({{= story.currChar }})<br>
+            Where are you taking me?<br>
+            <br>
+            (LentilSoup)<br>
+            We're going to the Temple of Falafel, we're going to see the Wizard there.<br>
+            <br>
+            ({{= story.currChar }})<br>
+            The Wizard of the Temple of Falafel? Who's that?<br>
+            <br>
+            (Hamburger)<br>
+            Just a crazy old man.
+            * LentilSoup slaps him on the hairy shoulder *<br>
+            <br>
+            Your breathing is getting a bit rough because of the hard trek. The fairies are flying very fast and even as fit as you are,
+            walking in the dense forest with roots and weeds sticking out is taking quite a bit of a toll on your body.<br>
+            You decide to stop talking and focus on the way ahead, at least with the fairies you're not going in circles, maybe this Falafel Wizard or whatever can help you.<br>
+            <br>
+            The trees start to spread out farther apart, you think you can see a light in the distant gloom, is that a fire?<br>
+            <turn to="{{= story.getPageChar('wayToTempleEncounter') }}">You press on after the fairies.</turn> 
         </page>
 
+        <page id="wayToTempleEncounterOreo">
+            The forest clears up a bit and with the fire in the distance you can see a bit better, you've started lagging pretty hard behind the fairies huffing and puffing as you go.<br>
+            Your forhead is sweaty and is leaking to your eyes which you wipe.<br>
+            Some branch grabs your arm and you yank your arm forward, but the branch seems to be stuck to your skin and holding you with incredible force.<br>
+            <br>
+            The unexpected resistance in momentum sends you spinning hard to the right.<br>
+            Your chest hits another sticky branch and your left leg as well.<br>
+            You try to move back without touching anymore of the sticky branches but you are stuck tight.<br>
+            You look behind you for the fairies but cannot see them anymore in the gloom, just the distant fire.<br>
+
+            Should you:<br>
+            * <show paragraph="{{= story.getPageChar('yellForHelpForestEncounter1')}}">Yell to the fairies</show><br>
+            * <turn to="{{= story.getPageChar('examineForestEncounter1')}}">Examine the branches</turn><br>
+            * <show paragraph="{{= story.getPageChar('flailForestEncounter1')}}">Use a strengthening spell to try and break free</show><br>
+        </page>
+
+        <paragraph id="flailForestEncounter1Oreo">
+            You recall the incantation in your head. You whisper the words and feel your pulse quicken. Blood is flowing hard through your veins and you feel incredibly hot.<br>
+            You brace yourself and start shaking your body hard, pulling with your free leg out of the sticky branches.<br>
+            You struggle for a whole minute with as little results as before the spell.<br>
+            You're worried if you flail too hard you will hit another of the sticky branches in the dark and become completely trapped.<br>
+            <show paragraph="flailForestEncounter2Oreo">...</show>
+        </paragraph>
+
+        <paragraph id="flailForestEncounter2Oreo">
+            {{story.forestSpiderDanger += 2;}}
+            {{? story.isDeathBySpider() }}
+            {{story.turnTo('deathByForestSpider');}}
+            {{??}}
+            Should you try again or do something else?
+            {{?}}
+        </paragraph>
+
+        <paragraph id="yellForHelpForestEncounter1Oreo">
+            You yell for Hamburger and LentilSoup loudly, your voice reverberates through the empty woods, your hear nothing but silence in return.<br>
+            You're starting to get a bad feeling about this.<br>
+            <show paragraph="yellForHelpForestEncounter2Oreo">...</show>
+        </paragraph>
+
+        <paragraph id="yellForHelpForestEncounter2Oreo">
+            {{story.forestSpiderDanger += 1;}}
+            {{? story.isDeathBySpider() }}
+            {{story.turnTo('deathByForestSpider');}}
+            {{??}}
+            Should you try again or do something else?
+            {{?}}
+        </paragraph>
+
+        <page id="deathByForestSpider">
+            You're thinking hard about your next move when a rustle from above pierces the silence.<br>
+            You turn your head upward just in time to see a grey-brown spider the size of a moose hanging above you, you try to scream and move, but feel your muscles betray you.<br>
+            You have trouble staying conscious as your back starts hurting intensely, were you already bitten before you even noticed the monstrosity?<br>
+            You faint.<br>
+            <br>
+            You're wrapped in something strong and can't move an inch, even if you weren't you're not sure you would be able to move anyway, you feel so weak...<br>
+            <br>
+            The ground is so far down from you that you can barley see it any more...<br>
+            <br>
+            You hear Hamburger swearing from far far below. Where the fuck did {{= story.currChar }} go?<br>
+            <br>
+            Only darkness and this sickening sound of something sucking<br>
+            *Glup Glup*<br>
+            You lose consciousness again.<br>
+            {{story.endGame();}}
+            
+        </page>
         <!-- Global Paragraphs -->
         <paragraph id="startp1">
             You pick yourself up and think, what to do? <br>
@@ -220,7 +347,7 @@
             You lean closer and turn him on his back. <br>
             ** Cough ** <br>
             You can hear his uneven breath and see the blood coming from his mouth, a tree branch is stuck mere inches from his heart halfway impaling him.<br>
-            {{? story.isCurrChar('Xena') }}
+            {{? story.isCurrChar('Oreo') }}
             You mumble a spell to help ease his suffering, nothing else could help him anymore...<br>
             {{?}}
             Listen to me {{= story.currChar }}, I knew who you were when first I saw you. <br>
