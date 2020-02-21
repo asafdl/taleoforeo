@@ -121,10 +121,12 @@
            <show paragraph="cartFly">...</show>
             
             <paragraph id="p1Oreo">
+                {{story.pushDisable("p1",true);}}
                 You quickly murmur a spell to soak most of the damage from the landing.<br>
                 <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
             </paragraph>
             <paragraph id="p2Oreo">
+                {{story.pushDisable("p2",true);}}
                 You're lucky, the spell works well and while the others around you crash horribly, you are saved from most of the damage.<br>
                 <show paragraph="startp1">...</show>
             </paragraph>
@@ -140,6 +142,7 @@
                 <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
             </paragraph>
             <paragraph id="p2Edge">
+                {{story.pushDisable("p2",true);}}
                 You crash horribly into a nearby tree breaking your back.<br>
                 <br>
                 "Fuck my life, why did you have to pick me, asshole..." are the last words that exit your mouth...<br>
@@ -205,6 +208,7 @@
             <show paragraph="fightFairies1">...</show>
 
             <paragraph id="fightFairies1">
+                {{story.pushDisable("fightFairies1",false);}}
                 True to your word, you flatten your hand and swat at the tiny fairy.<br>
                 ** Duff **<br>
                 He crashes to the ground with a surprising big thud for such a small creature.<br>
@@ -213,6 +217,7 @@
                 <show paragraph="fightFairies2">...</show>
             </paragraph>
             <paragraph id="fightFairies2">
+                {{story.pushDisable("fightFairies2",false);}}
                 I told you that would happen! When are you going to start listening to me? She admonishes him.<br><br>
                 You noticed that even though she is worried her mate is hurt, she is also clearly pleased with herself for being correct.<br>
                 <br>
@@ -242,6 +247,7 @@
             <br>
             <show paragraph="fairiesStory1">...</show>
             <paragraph id="fairiesStory1">
+                {{story.pushDisable("fairiesStory1",false);}}
                 Wait this can't be *that* {{= story.currChar }}, right?<br>
                 Hamburger flies close to you and looks at your face carefully.<br>
                 <br>
@@ -250,6 +256,7 @@
                 <show paragraph="fairiesStory2">...</show>
             </paragraph>
             <paragraph id="fairiesStory2">
+                {{story.pushDisable("fairiesStory2",false);}}
                 (Hamburger)<br>
                 We were just going out. Towards the temple, you should follow us {{= story.currChar }}.<br>
                 <br>
@@ -289,7 +296,7 @@
         </page>
 
         <page id="wayToTempleEncounterOreo">
-            The forest clears up a bit and with the fire in the distance you can see a bit better, you've started lagging pretty hard behind the fairies huffing and puffing as you go.<br>
+            The forest clears up a bit and with the fire in the distance you can see a bit better, you've started lagging pretty hard behind the fairies, huffing and puffing as you go.<br>
             Your forehead is sweaty and is leaking to your eyes which you wipe.<br>
             Some branch grabs your arm, you yank your arm to free it, but the branch seems to be stuck to you, holding you with incredible force.<br>
             <br>
@@ -320,7 +327,7 @@
             You start to get very concerned now, these are definitely not branches.<br>
             You pick up a twig from the ground carefully avoiding moving your body that's already stuck to the "ropes", and try to examine the rope holding your arm with the twig.<br>
             <br>
-            The rope is taut and the smallest poking of it sends small vibrations up the rope to the dark sky.<br> 
+            The rope is taut and the smallest poking of it sends small vibrations up to the dark sky.<br> 
             The twig instantly gets stuck just like the rest of your body and you give up trying to examine it.<br>
             <br>
             Suddenly you feel a very small vibration in the rope holding you, you hadn't moved at all, and the vibration seems to emanate from far above you. You look up but all you can see is the rope stretching above to the darkness.<br>
@@ -337,6 +344,8 @@
             {{?}}
             * <show paragraph="{{= story.getPageChar('knifeForestEncounter1')}}">Use your pocket knife to cut away at the clothes that are stuck to the web.</show><br>
             <paragraph id="cutForestEncounter1Oreo">
+                {{story.pushDisable("knifeForestEncounter1",true);}}
+                {{story.pushDisable("cutForestEncounter1",true);}}
                 You draw your {{= story.currWep }} brace yourself and start hacking away at the webs holding you, at first the weapon does not seem to have much affect, you start to panic.<br>
                 <br>
                 You throw a mighty swing at the web and it starts to give way, just a bit, you hit at the same place harder, and suddenly it snaps!<br>
@@ -346,6 +355,7 @@
             </paragraph>
             <paragraph id="knifeForestEncounter1Oreo">
                 {{story.pushDisable("knifeForestEncounter1",true);}}
+                {{story.pushDisable("cutForestEncounter1",true);}}
                 You start franticly cutting away at your cloths as the vibrations on the web get stronger.<br>
                 In your haste to free yourself, you cut deep into the skin of your entangled leg, you cry out in pain!<br>
                 {{ story.calcDmg(1,15,10,true);}}
@@ -370,7 +380,8 @@
             <br>
             <show paragraph="{{= story.getPageChar('forestEncounter8')}}">...</show>
             <paragraph id="forestEncounter8Oreo">
-                You scream in pain as you start loosing consciousness, the poison is acting fast.<br>
+                {{story.pushDisable("forestEncounter8",true);}}
+                You scream in pain as the fangs leave your body, a paralyzing feeling blossoms from your chest to the rest of your body, the poison is acting fast.<br>
                 Just before you pass out, you hear shouting somewhere above you.<br>
                 The forest ceiling is illuminated in strange lights as your hear the squeaky voices of the fairies casting spells to distract the beast.<br>
                 <br>
@@ -378,6 +389,7 @@
                 <show paragraph="{{= story.getPageChar('forestEncounter9')}}">...</show>
             </paragraph>
             <paragraph id="forestEncounter9Oreo">
+                {{story.pushDisable("forestEncounter9",true);}}
                 Suddenly a strange deep voice bellows: "Be gone foul beast, back to your darkness!"<br>
                 To this the Spider responds, it appears as if it wants to flee but is undecided, it's prey is immobilized and ripe for the taking, and such a plump prey it is!<br>
                 You hear the deep voice yell again and a brown glowing ball is flung at the Spider, leaving a trail of light behind it.<br>
@@ -414,6 +426,7 @@
             <show paragraph="{{= story.getPageChar('isDedForestEncounter1')}}">...</show>
         </paragraph>
         <paragraph id="isDedForestEncounter1Oreo">
+            {{story.pushDisable("isDedForestEncounter1",true);}}
             {{? story.isDed() }}
             {{story.turnTo('deathByForestSpider');}}
             {{??}}
@@ -426,6 +439,7 @@
             {{?}}
         </paragraph>
         <paragraph id="isDedForestEncounter2Oreo">
+            {{story.pushDisable("isDedForestEncounter2",true);}}
             {{? story.isDed() }}
                 {{story.turnTo('deathByForestSpider');}}
             {{??}}
@@ -437,10 +451,11 @@
             {{?}}
         </paragraph>
         <paragraph id="forestEncounter7Oreo">
+            {{story.pushDisable("forestEncounter7",true);}}
             {{? story.isDed() }}
                 {{story.turnTo('deathByForestSpider');}}
             {{??}}
-            As the Spider's twitch fast movements become a reality, you realise, you're not going to survive this fight.
+            As the Spider's twitch fast movements become a reality, you realise, you're not going to survive this fight.<br>
             <turn to="{{= story.getPageChar('forestEncounter6')}}">...</turn>
             {{?}}
         </paragraph>
@@ -500,7 +515,8 @@
             <br>
             <show paragraph="preDeathByForestSpider3">...</show>
             <paragraph id="preDeathByForestSpider3">
-                You are suddenly grabbed in the air by two hairy legs, and feel a sharp pain in your chest, you trash around, but almost instantaneously you feel the strength ebbing from you.<br>
+                {{story.pushDisable("preDeathByForestSpider3",false);}}
+                You are suddenly grabbed in the air by two hairy legs, and feel a sharp pain in your chest, you thrash around, but almost instantaneously you feel the strength ebbing from you.<br>
                 <turn to="deathByForestSpider">...</turn>
             </paragraph>
         </page>
@@ -522,11 +538,13 @@
 
         <!-- Global Paragraphs -->
         <paragraph id="startp1">
+            {{story.pushDisable("startp1",false);}}
             You pick yourself up and think, what to do? <br>
             <turn to="landForest">...</turn>
         </paragraph>
 
         <paragraph id="forestCheckAlive1">
+            {{story.pushDisable("forestCheckAlive1",false);}}
             At first glance it appears everyone is dead, however you brave forward to make sure. <br>
             ** Groan **<br>
             You quickly turn around to see Gerald of Rivia slightly moving.<br>
@@ -535,6 +553,7 @@
         </paragraph>
 
         <paragraph id="forestCheckAlive2">
+            {{story.pushDisable("forestCheckAlive2",false);}}
             You lean closer and turn him on his back. <br>
             ** Cough ** <br>
             You can hear his uneven breath and see the blood coming from his mouth, a tree branch is stuck mere inches from his heart halfway impaling him.<br>
@@ -548,6 +567,7 @@
         </paragraph>
 
         <paragraph id="forestDestiny">
+            {{story.pushDisable("forestDestiny",false);}}
             The Master Terraformer, he is your destiny! <br>
             <br>
             ** Wheeze ** <br>
@@ -559,6 +579,7 @@
         </paragraph>
 
         <paragraph id="cartFly">
+            {{story.pushDisable("cartFly",false);}}
             Suddenly, a rumble in the distance, you hear a mighty roar.<br>
             The ground shakes as a large shadow engulfs the cart.<br>
             <br>
@@ -568,6 +589,7 @@
         </paragraph>
 
         <paragraph id="ClearingFairies1">
+            {{story.pushDisable("ClearingFairies1",false);}}
             You quickly turn around, 
             {{? story.hasWep }}
             and reach to draw your weapon from it's sheath.
@@ -585,6 +607,7 @@
         </paragraph>
 
         <paragraph id="ClearingFairies2">
+            {{story.pushDisable("ClearingFairies2",false);}}
             The male puffs his chest and looks you down, raising his fists and a tiny voice he cries:<br>
             (Male Fairy)<br>
             Be gone from our clearing you overgrown cockhair!<br>
