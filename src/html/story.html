@@ -119,7 +119,7 @@
             <paragraph id="p2Edge">
                 You crash horribly into a nearby tree breaking your back.<br>
                 <br>
-                "Fuck my life" are the last words that exit your mouth...<br>
+                "Fuck my life, why did you have to pick me, asshole..." are the last words that exit your mouth...<br>
                 <br>
                 <br>
                 You die.
@@ -229,13 +229,13 @@
                 We were just going out. Towards the temple, you should follow us {{= story.currChar }}.<br>
                 <br>
                 <br>
-                He turns around grabs LentilSoup, they start forward whispering amongst themselves in hushed voices,
+                He turns around grabs LentilSoup, they start moving, whispering amongst themselves in hushed voices,
                 you can make out the words *destiny* and something that sounds like *salafa(?)*, but they quickly get out of hearing range.
                 <br>
-                Hamburger turns around suddenly, "Come on fuckface!", he yells impatiently before hurrying forward.<br>
+                Hamburger turns around suddenly, "Come on fuckface!" he yells impatiently before hurrying forward.<br>
                 <br>
                 You can vaguely hear LentilSoup admonishing him for his foul language.<br>
-                You quickly <turn to="wayToTemple">hurry forward</turn> as to not lose the fairies.
+                You quickly <turn to="wayToTemple">get going</turn> as to not lose the fairies.
             </paragraph>
         </page>
         <!-- Temple -->
@@ -265,8 +265,8 @@
 
         <page id="wayToTempleEncounterOreo">
             The forest clears up a bit and with the fire in the distance you can see a bit better, you've started lagging pretty hard behind the fairies huffing and puffing as you go.<br>
-            Your forhead is sweaty and is leaking to your eyes which you wipe.<br>
-            Some branch grabs your arm and you yank your arm forward, but the branch seems to be stuck to your skin and holding you with incredible force.<br>
+            Your forehead is sweaty and is leaking to your eyes which you wipe.<br>
+            Some branch grabs your arm, you yank your arm to free it, but the branch seems to be stuck to you, holding you with incredible force.<br>
             <br>
             The unexpected resistance in momentum sends you spinning hard to the right.<br>
             Your chest hits another sticky branch and your left leg as well.<br>
@@ -277,6 +277,35 @@
             * <show paragraph="{{= story.getPageChar('yellForHelpForestEncounter1')}}">Yell to the fairies</show><br>
             * <turn to="{{= story.getPageChar('examineForestEncounter1')}}">Examine the branches</turn><br>
             * <show paragraph="{{= story.getPageChar('flailForestEncounter1')}}">Use a strengthening spell to try and break free</show><br>
+        </page>
+
+        <page id="examineForestEncounter1Oreo">
+            You recall in your memory a spell that will let you see a bit better in the darkness of the forest. You speak the words, and squint your eyes, 
+            the spell starts taking hold as the world around you seems to turn to shades of gray.<br>
+            You wait a few moments for your eyes to adjust and try to asses your predicament.<br>
+            <br>
+            You look behind you to see if the fairies are in anyway visible now but the spell is not powerful enough to pierce through the far away darkness.<br>
+            You look at the branches that are holding you.<br>
+            <br>
+            It is hard to determine colors with the active spell, but the branches that hold you do not seem to be the same dark hue of the tree trunk next to you.<br>
+            Your eyes widen as you see that the branch that is holding your leg is connected to the floor of the forest and shoots way up into the darkness above, not emanating from any of the trees above
+            but continuing in an exact straight path to the sky above.<br>
+            In your surrounding you can see similar such branches(?) connecting between the sky and the ground, in all sort of odd angles.<br>
+            <br>
+            You start to get very concerned now, these are definitely not branches.<br>
+            You pick up a twig from the ground carefully avoiding moving your body that's already stuck to the "ropes", and try to examine the rope holding your arm with the twig.<br>
+            <br>
+            The rope is taut and the smallest poking of it sends small vibrations up the rope to the dark sky.<br> 
+            The twig instantly gets stuck just like the rest of your body and you give up trying to examine it.<br>
+            <br>
+            Suddenly you feel a very small vibration in the rope holding you, you hadn't moved at all, and the vibration seems to emanate from far above you. You look up but all you can see is the rope stretching above to the darkness.<br>
+            <br>
+            Understanding hits you like a hammer, you are stuck in some enormous creature's web.<br>
+            <turn to="{{= story.getPageChar('forestEncounter1')}}">You feel another small vibration in the rope...</turn>
+        </page>
+
+        <page id="forestEncounter1Oreo">
+            You think fast now, 
         </page>
 
         <paragraph id="flailForestEncounter1Oreo">
