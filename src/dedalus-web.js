@@ -358,14 +358,14 @@ var DedalusWeb;
     DedalusWeb.prototype.disable = function (id) {
         // Substitute the matched <a> with a <span> remembering the click function
         var self = this;
-        var element = self.domTarget.find('a[data-id="' + id + '"]'),
+        var element = self.domTarget.find('a[data-target-id="' + id + '"]'),
             elementDom,
             spanElement,
             originalClickFn;
 
         if (element.length > 0) {
             elementDom      = element.get(0),
-            spanElement     = '<span data-id="' + id + '">' + element.text() + '</span>',
+            spanElement     = '<span data-target-id="' + id + '">' + element.text() + '</span>',
 
             // Trick to get the current click event
             // http://stackoverflow.com/questions/2518421/jquery-find-events-handlers-registered-with-an-object

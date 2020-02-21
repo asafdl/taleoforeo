@@ -8,7 +8,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="../dedalus.js"></script>
     <script src="../dedalus-web.js"></script>
-    <script src="../taleOfOreo.js"></script>
     <link rel="stylesheet" href="themes/nix/story.css">
 
  </head>
@@ -16,18 +15,36 @@
     <div id="story">
 
         <initscript>
+            story.temp;
             story.toDisable = [];
+            story.hp = 100;
             story.hasWep = false;
+            story.currWep = "";
             story.currChar = "Oreo";
             story.forestSpiderDanger = 0;
+            story.currDmg = 0;
             story.isDeathBySpider = function(){
                 return story.forestSpiderDanger > 2
             };
             story.isCurrChar = function(c) {
                 return c === story.currChar;
             };
-            story.getPageChar = function(pg){
+            story.getPageChar = function(pg) {
                 return pg + story.currChar;
+            };
+            story.isDed = function() {
+                return story.hp <= 0;
+            };
+            story.calcDmg = function(modifier, lowlim, toplim, isTake) {
+                story.currDmg = Math.floor((Math.random() * toplim * modifier)) + lowlim;
+                if(isTake)
+                    story.hp -= story.currDmg 
+            };
+            story.pushDisable = function(str, isChar) {
+                if(isChar)
+                    story.toDisable.push(story.getPageChar(str));
+                else
+                    story.toDisable.push(str);
             };
         </initscript>
 
@@ -42,6 +59,11 @@
         </beforeEveryParagraphShown>
 
         <afterEveryThing>
+            if(story.toDisable) {
+                for (var i = 0; i < story.toDisable.length; ++i) {
+                    story.disable(story.toDisable[i]);
+                }
+            }
         </afterEveryThing>
 
         <afterEveryPageTurn>
@@ -64,6 +86,7 @@
                 * Placed in sheath. *
                 {{ story.putInInventory('steelSword'); }}
                 {{story.hasWep = true;}}
+                {{story.currWep = "Steel Sword";}}
             
             </action>
 
@@ -139,12 +162,14 @@
         
         <page id="landForest">
             You are in a thick forest, there are many items strewn around you, yet you hear the roar of the beast not too far away.<br>
-            Should you <turn to="{{= story.getPageChar('lookAroundForest') }}">risk a look around</turn>, 
-            <turn to="intoForest">run deeper into the woods</turn> or turn back and 
-            <turn to="{{= story.getPageChar('FightWoodsBeast') }}">face the creature</turn> that attacked?
+            Should you:<br>
+            * <turn to="{{= story.getPageChar('lookAroundForest') }}">Risk a look around</turn>.<br> 
+            * <turn to="intoForest">Run deeper into the woods</turn>.<br>
+            * Turn back and <turn to="{{= story.getPageChar('FightWoodsBeast') }}">face the creature</turn> that attacked?<br>
         </page>
         
         <page id="lookAroundForestOreo">
+            {{story.pushDisable("lookAroundForest",true);}}
             <p>On the ground around you, you can spot a <interact with="steelSword">sword</interact>, there are also the people from the cart, maybe you should <show paragraph="forestCheckAlive1">check if they're still alive</show>.</p>
         </page>
         
@@ -252,7 +277,7 @@
             The Wizard of the Temple of Falafel? Who's that?<br>
             <br>
             (Hamburger)<br>
-            Just a crazy old man.
+            Just a crazy old man.<br>
             * LentilSoup slaps him on the hairy shoulder *<br>
             <br>
             Your breathing is getting a bit rough because of the hard trek. The fairies are flying very fast and even as fit as you are,
@@ -300,17 +325,139 @@
             <br>
             Suddenly you feel a very small vibration in the rope holding you, you hadn't moved at all, and the vibration seems to emanate from far above you. You look up but all you can see is the rope stretching above to the darkness.<br>
             <br>
-            Understanding hits you like a hammer, you are stuck in some enormous creature's web.<br>
-            <turn to="{{= story.getPageChar('forestEncounter1')}}">You feel another small vibration in the rope...</turn>
+            Understanding hits you like a hammer, you are entangled in some enormous creature's web.<br>
+            <turn to="{{= story.getPageChar('forestEncounter1')}}">You feel another small vibration in the web...</turn>
         </page>
 
         <page id="forestEncounter1Oreo">
-            You think fast now, 
+            You think fast now, you must free yourself, you have one free hand and one free leg, this is no condition to fight.<br>
+            You can:<br>
+            {{? story.hasWep }}
+            * <show paragraph="{{= story.getPageChar('cutForestEncounter1')}}">Draw your {{= story.currWep }} and attempt to cut the rope.</show><br>
+            {{?}}
+            * <show paragraph="{{= story.getPageChar('knifeForestEncounter1')}}">Use your pocket knife to cut away at the clothes that are stuck to the web.</show><br>
+            <paragraph id="cutForestEncounter1Oreo">
+                You draw your {{= story.currWep }} brace yourself and start hacking away at the webs holding you, at first the weapon does not seem to have much affect, you start to panic.<br>
+                <br>
+                You throw a mighty swing at the web and it starts to give way, just a bit, you hit at the same place harder, and suddenly it snaps!<br>
+                With a large twang it ricochets into the dark sky, you think you hear a thud of it hitting something big above you.<br>
+                You hack away with renewed vigor and cut away the rest of the webs, it goes much faster once you've freed your chest and other hand.<br>  
+                You free yourself and fall back down, <turn to="{{= story.getPageChar('forestEncounter2')}}">above you a large shape starts to appear with inhuman speed.</turn> 
+            </paragraph>
+            <paragraph id="knifeForestEncounter1Oreo">
+                {{story.pushDisable("knifeForestEncounter1",true);}}
+                You start franticly cutting away at your cloths as the vibrations on the web get stronger.<br>
+                In your haste to free yourself, you cut deep into the skin of your entangled leg, you cry out in pain!<br>
+                {{ story.calcDmg(1,15,10,true);}}
+                ** Take {{= story.currDmg}} Damage (HP: {{= story.hp}})**<br>
+                Theres no time to feel bad for yourself, as you continue hacking away at the clothes.<br>
+                You free yourself and fall back down, <turn to="{{= story.getPageChar('forestEncounter2')}}">above you a large shape starts to appear with inhuman speed.</turn> 
+            </paragraph>
         </page>
+
+        <page id="forestEncounter2Oreo">
+            A huge grey-brown Mammoth Spider is repelling headfirst at you, it's 8 yellow eyes are fixed at you.<br>
+            Out of it's enormous, brown hairy belly, web is shooting out and it's hind 4 legs are pushing out the web with practiced rhythm, it is moving towards you with terrifying speed.<br>
+            It is at least the size of a moose, you observe with horror.<br>
+            <show paragraph="{{= story.getPageChar('forestEncounter3')}}">You roll out of the way just as it lands.</show><br>
+        </page>
+
+        <page id="forestEncounter6Oreo">
+            The Mammoth Spider pins you down with a practiced move.<br>
+            The pounce hits you hard and you see stars in your eyes for a moment, you're completely dazed and unable to move.<br>
+            <br>
+            You look into it's dead yellow eyes as it bares it's fangs and sinks them deep into your chest.<br>
+            <br>
+            <show paragraph="{{= story.getPageChar('forestEncounter8')}}">...</show>
+            <paragraph id="forestEncounter8Oreo">
+                You scream in pain as you start loosing consciousness, the poison is acting fast.<br>
+                Just before you pass out, you hear shouting somewhere above you.<br>
+                The forest ceiling is illuminated in strange lights as your hear the squeaky voices of the fairies casting spells to distract the beast.<br>
+                <br>
+                The Mammoth Spider barely notices, in all the centuries of prowling it's forest not one prey has ever escaped it.<br>
+                <show paragraph="{{= story.getPageChar('forestEncounter9')}}">...</show>
+            </paragraph>
+            <paragraph id="forestEncounter9Oreo">
+                Suddenly a strange deep voice bellows: "Be gone foul beast, back to your darkness!"<br>
+                To this the Spider responds, it appears as if it wants to flee but is undecided, it's prey is immobilized and ripe for the taking, and such a plump prey it is!<br>
+                You hear the deep voice yell again and a brown glowing ball is flung at the Spider, leaving a trail of light behind it.<br>
+                <br>
+                The Spider is hit and trembles from the force of it. It raises it's ugly head and peers at the old Wizard.<br>
+                Decided on a course of action the Spider suddenly leaps from you and hits hard one of the tree trunks above you.<br>
+                It quickly latches on to one of it's webs and scurries away so fast, you're not even sure what tree it was on a moment ago, it disappears into the darkness above.<br>
+                <br>
+                Lying on the floor breathing hard, you struggle to stay awake as the poison takes it's toll on your body.<br>
+                You swear you can see yellow eyes above in the distance, but your consciousness is almost gone, before you pass out, the strange Falafel Wizard comes into your view.<br>
+                He has pink skin, crazy white curly hair and kind eyes. You faint.<br>
+                <turn to="temple1">...</turn>
+            </paragraph>
+        </page>
+
+        <paragraph id="forestEncounter3Oreo">
+            {{story.pushDisable("forestEncounter3",true);}}
+            The Mammoth Spider moves to grab you but misses, you think you hear a slight frustrated hiss. Clearly this creature is not used to anything escaping it's grasp.<br>
+            You can:<br>
+            {{? story.hasWep }}
+            * <show paragraph="{{= story.getPageChar('forestEncounter4')}}">Counter with your {{= story.currWep }}.</show><br>
+            {{?}}
+            * <show paragraph="{{= story.getPageChar('forestEncounter5')}}">Counter with a spell.</show><br>
+            * Make <turn to="preDeathByForestSpider2">a run for it</turn> towards the temple and the fire in the distance.
+        </paragraph>
+        <paragraph id="forestEncounter5Oreo">
+            {{story.pushDisable("forestEncounter5",true);}}
+            {{story.pushDisable("forestEncounter4",true);}}
+            You spring to your feet and speak the spell for fire.<br>
+            However the Spider is so fast you barely have time to finish the spell as he gets close enough to hit you hard with one of it's forward legs.<br>
+            Pain erupts in your body.<br>
+            {{ story.calcDmg(1.2, 10, 15, true);}}
+            ** Take {{= story.currDmg }} Damage (HP: {{= story.hp}})**<br>
+            <show paragraph="{{= story.getPageChar('isDedForestEncounter1')}}">...</show>
+        </paragraph>
+        <paragraph id="isDedForestEncounter1Oreo">
+            {{? story.isDed() }}
+            {{story.turnTo('deathByForestSpider');}}
+            {{??}}
+            Your spell misses and flies to the sky grazing the spider and burning off a bit of it's skin, causing a foul stench.
+            You quickly speak the spell to force push the Spider away.<br>
+            The Spider flings back, but it is clear it's not giving up, it pounces straight at you with incredible speed, you barely have time to react.<br>
+            {{ story.calcDmg(0.9, 15, 55, true);}}<br>
+            ** Take {{= story.currDmg}} Damage (HP: {{= story.hp}})**<br>
+            <show paragraph="{{= story.getPageChar('forestEncounter7')}}">...</show>
+            {{?}}
+        </paragraph>
+        <paragraph id="isDedForestEncounter2Oreo">
+            {{? story.isDed() }}
+                {{story.turnTo('deathByForestSpider');}}
+            {{??}}
+            You quickly counter hit the Spider again, catching the edge of it's lower left eye.<br>
+            The Spider flings back, but it is clear it's not giving up, it pounces straight at you with incredible speed, you barely have time to react.<br>
+            {{ story.calcDmg(0.9, 15, 55, true);}}<br>
+            ** Take {{= story.currDmg}} Damage (HP: {{= story.hp}})**<br>
+            <show paragraph="{{= story.getPageChar('forestEncounter7')}}">...</show>
+            {{?}}
+        </paragraph>
+        <paragraph id="forestEncounter7Oreo">
+            {{? story.isDed() }}
+                {{story.turnTo('deathByForestSpider');}}
+            {{??}}
+            As the Spider's twitch fast movements become a reality, you realise, you're not going to survive this fight.
+            <turn to="{{= story.getPageChar('forestEncounter6')}}">...</turn>
+            {{?}}
+        </paragraph>
+        <paragraph id="forestEncounter4Oreo">
+            {{story.pushDisable("forestEncounter5",true);}}
+            {{story.pushDisable("forestEncounter4",true);}}
+            As you continue your roll, you get into a crouching position and slash at the Spider's leg, your {{= story.currWep }} connects and you hear a small crunch.<br>
+            The Spider quickly counters with one of it's other forward legs, hitting you hard on your shoulder.<br>
+            Pain erupts in your body.<br>
+            {{ story.calcDmg(0.8, 10, 25, true);}}
+            ** Take {{= story.currDmg }} Damage (HP: {{= story.hp}})**<br>
+            <show paragraph="{{= story.getPageChar('isDedForestEncounter2')}}">...</show>
+        </paragraph>
 
         <paragraph id="flailForestEncounter1Oreo">
             You recall the incantation in your head. You whisper the words and feel your pulse quicken. Blood is flowing hard through your veins and you feel incredibly hot.<br>
-            You brace yourself and start shaking your body hard, pulling with your free leg out of the sticky branches.<br>
+            You brace yourself and start shaking your body, hard, pulling with your free leg out of the sticky branches.<br>
             You struggle for a whole minute with as little results as before the spell.<br>
             You're worried if you flail too hard you will hit another of the sticky branches in the dark and become completely trapped.<br>
             <show paragraph="flailForestEncounter2Oreo">...</show>
@@ -319,7 +466,7 @@
         <paragraph id="flailForestEncounter2Oreo">
             {{story.forestSpiderDanger += 2;}}
             {{? story.isDeathBySpider() }}
-            {{story.turnTo('deathByForestSpider');}}
+            {{story.turnTo('preDeathByForestSpider1');}}
             {{??}}
             Should you try again or do something else?
             {{?}}
@@ -334,30 +481,45 @@
         <paragraph id="yellForHelpForestEncounter2Oreo">
             {{story.forestSpiderDanger += 1;}}
             {{? story.isDeathBySpider() }}
-            {{story.turnTo('deathByForestSpider');}}
+            {{story.turnTo('preDeathByForestSpider1');}}
             {{??}}
             Should you try again or do something else?
             {{?}}
         </paragraph>
 
-        <page id="deathByForestSpider">
+        <page id="preDeathByForestSpider1">
             You're thinking hard about your next move when a rustle from above pierces the silence.<br>
             You turn your head upward just in time to see a grey-brown spider the size of a moose hanging above you, you try to scream and move, but feel your muscles betray you.<br>
             You have trouble staying conscious as your back starts hurting intensely, were you already bitten before you even noticed the monstrosity?<br>
+            <turn to="deathByForestSpider">...</turn>
+        </page>
+
+        <page id="preDeathByForestSpider2">
+            You decide to make a run for it, you keep rolling, mid roll you jump and dash forward.<br>
+            You run quickly towards the fire, after about 15 paces you turn to look behind you, you cannot spot the Mammoth Spider anymore.<br>
+            <br>
+            <show paragraph="preDeathByForestSpider3">...</show>
+            <paragraph id="preDeathByForestSpider3">
+                You are suddenly grabbed in the air by two hairy legs, and feel a sharp pain in your chest, you trash around, but almost instantaneously you feel the strength ebbing from you.<br>
+                <turn to="deathByForestSpider">...</turn>
+            </paragraph>
+        </page>
+
+        <page id="deathByForestSpider">
             You faint.<br>
             <br>
             You're wrapped in something strong and can't move an inch, even if you weren't you're not sure you would be able to move anyway, you feel so weak...<br>
             <br>
-            The ground is so far down from you that you can barley see it any more...<br>
+            The ground is so far down from you that you can barely see it any more...<br>
             <br>
             You hear Hamburger swearing from far far below. Where the fuck did {{= story.currChar }} go?<br>
             <br>
-            Only darkness and this sickening sound of something sucking<br>
+            Only darkness engulfs you, darkness and this sickening sound.<br>
             *Glup Glup*<br>
             You lose consciousness again.<br>
             {{story.endGame();}}
-            
         </page>
+
         <!-- Global Paragraphs -->
         <paragraph id="startp1">
             You pick yourself up and think, what to do? <br>
