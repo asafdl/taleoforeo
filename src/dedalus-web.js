@@ -379,8 +379,8 @@ var DedalusWeb;
 
     DedalusWeb.prototype.enable = function (id) {
         // Substitute the matched <span> with a <a> restoring the click function
-        var element         = this.domTarget.find('span[data-id="' + id + '"]'),
-            aElement        = '<a href="#" data-id="' + id + '">' + element.text() + '</a>',
+        var element         = this.domTarget.find('span[data-target-id="' + id + '"]'),
+            aElement        = '<a href="#" data-target-id="' + id + '">' + element.text() + '</a>',
             originalClickFn = element.data('originalClickFn');
 
         // Restore original click function

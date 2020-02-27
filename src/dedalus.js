@@ -381,7 +381,8 @@ var Dedalus,
             disable                      : this.disable.bind(this),
             enable                       : this.enable.bind(this),
             showParagraph                : this.showParagraph.bind(this),
-            endGame                      : this.endGame.bind(this)
+            endGame                      : this.endGame.bind(this),
+            print                        : this.print.bind(this)
         };
     };
 
@@ -453,6 +454,7 @@ var Dedalus,
         this.executeBeforeEveryParagraphShown();
 
         this.print(content);
+        this.disable(target);
 
         this.executeAfterEveryParagraphShown();
 

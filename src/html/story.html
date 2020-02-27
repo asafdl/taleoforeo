@@ -23,6 +23,7 @@
             story.currChar = "Oreo";
             story.forestSpiderDanger = 0;
             story.currDmg = 0;
+            story.falafelWizardMood = 0;
             story.isDeathBySpider = function(){
                 return story.forestSpiderDanger > 2
             };
@@ -37,8 +38,18 @@
             };
             story.calcDmg = function(modifier, lowlim, toplim, isTake) {
                 story.currDmg = Math.floor((Math.random() * toplim * modifier)) + lowlim;
-                if(isTake)
-                    story.hp -= story.currDmg 
+                if(isTake) {
+                    story.hp -= story.currDmg;
+                    story.print(function(){
+                        return "** Take " + story.currDmg + " (HP: " + story.hp + ") **";
+                    });
+                }
+            };
+            story.heal = function(hp) {
+                story.hp += hp;
+                story.print(function(){
+                    return "** Heal " + hp + " (HP: " + story.hp + ") **";
+                });
             };
             story.pushDisable = function(str, isChar) {
                 if(isChar)
@@ -109,7 +120,7 @@
             (Hero) <br>
             * I'm <turn to="pg1Oreo">Oreo The Warrior Priestess</turn>.<br>
             * I'm <turn to="pg1Edge">xXxPussySlayer69xXx The Edgelord</turn>.<br>
-            * I'm <turn to="pg1Pitz">Pitz The Evil Rouge</turn>.<br>
+            * I'm <turn to="temple1">Pitz The Evil Rouge</turn>.<br>
         </page>
         <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
         <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
@@ -121,12 +132,10 @@
            <show paragraph="cartFly">...</show>
             
             <paragraph id="p1Oreo">
-                {{story.pushDisable("p1",true);}}
                 You quickly murmur a spell to soak most of the damage from the landing.<br>
                 <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
             </paragraph>
             <paragraph id="p2Oreo">
-                {{story.pushDisable("p2",true);}}
                 You're lucky, the spell works well and while the others around you crash horribly, you are saved from most of the damage.<br>
                 <show paragraph="startp1">...</show>
             </paragraph>
@@ -142,7 +151,6 @@
                 <show paragraph="{{= story.getPageChar('p2') }}">...</turn>
             </paragraph>
             <paragraph id="p2Edge">
-                {{story.pushDisable("p2",true);}}
                 You crash horribly into a nearby tree breaking your back.<br>
                 <br>
                 "Fuck my life, why did you have to pick me, asshole..." are the last words that exit your mouth...<br>
@@ -188,7 +196,8 @@
             Blinded and stunned by the beast your courage wavers.
             <br>
             You try to retreat through the thicket you came from but you stumble and get trapped.<br><br>
-            Within seconds the beast is upon you and the last thing you hear is a strange voice you did not know you had uttering a short whimper.
+            Within seconds the beast is upon you and the last thing you hear is a strange voice you did not know you had uttering a short whimper.<br>
+            You die.
             {{story.endGame();}} 
         </page>
 
@@ -208,7 +217,6 @@
             <show paragraph="fightFairies1">...</show>
 
             <paragraph id="fightFairies1">
-                {{story.pushDisable("fightFairies1",false);}}
                 True to your word, you flatten your hand and swat at the tiny fairy.<br>
                 ** Duff **<br>
                 He crashes to the ground with a surprising big thud for such a small creature.<br>
@@ -217,7 +225,6 @@
                 <show paragraph="fightFairies2">...</show>
             </paragraph>
             <paragraph id="fightFairies2">
-                {{story.pushDisable("fightFairies2",false);}}
                 I told you that would happen! When are you going to start listening to me? She admonishes him.<br><br>
                 You noticed that even though she is worried her mate is hurt, she is also clearly pleased with herself for being correct.<br>
                 <br>
@@ -244,10 +251,8 @@
             <br>
             LentilSoup flashes him an exasperated look...<br>
             She starts to apologize for him when her words trail away, she looks at your face intently.<br>
-            <br>
             <show paragraph="fairiesStory1">...</show>
             <paragraph id="fairiesStory1">
-                {{story.pushDisable("fairiesStory1",false);}}
                 Wait this can't be *that* {{= story.currChar }}, right?<br>
                 Hamburger flies close to you and looks at your face carefully.<br>
                 <br>
@@ -256,7 +261,6 @@
                 <show paragraph="fairiesStory2">...</show>
             </paragraph>
             <paragraph id="fairiesStory2">
-                {{story.pushDisable("fairiesStory2",false);}}
                 (Hamburger)<br>
                 We were just going out. Towards the temple, you should follow us {{= story.currChar }}.<br>
                 <br>
@@ -270,7 +274,6 @@
                 You quickly <turn to="wayToTemple">get going</turn> as to not lose the fairies.
             </paragraph>
         </page>
-        <!-- Temple -->
 
         <page id="wayToTemple">
             You catch up with the fairies with a bit of difficulty as they move very deftly through the forest.<br>
@@ -345,21 +348,18 @@
             * <show paragraph="{{= story.getPageChar('knifeForestEncounter1')}}">Use your pocket knife to cut away at the clothes that are stuck to the web.</show><br>
             <paragraph id="cutForestEncounter1Oreo">
                 {{story.pushDisable("knifeForestEncounter1",true);}}
-                {{story.pushDisable("cutForestEncounter1",true);}}
-                You draw your {{= story.currWep }} brace yourself and start hacking away at the webs holding you, at first the weapon does not seem to have much affect, you start to panic.<br>
+                You draw your {{= story.currWep }}, and take a deep breath. You start hacking away at the webs holding you, at first the weapon does not seem to have much affect, you start to panic.<br>
                 <br>
                 You throw a mighty swing at the web and it starts to give way, just a bit, you hit at the same place harder, and suddenly it snaps!<br>
                 With a large twang it ricochets into the dark sky, you think you hear a thud of it hitting something big above you.<br>
                 You hack away with renewed vigor and cut away the rest of the webs, it goes much faster once you've freed your chest and other hand.<br>  
                 You free yourself and fall back down, <turn to="{{= story.getPageChar('forestEncounter2')}}">above you a large shape starts to appear with inhuman speed.</turn> 
             </paragraph>
-            <paragraph id="knifeForestEncounter1Oreo">
-                {{story.pushDisable("knifeForestEncounter1",true);}}
+            <paragraph id="knifeForestEncounter1Oreo">b
                 {{story.pushDisable("cutForestEncounter1",true);}}
                 You start franticly cutting away at your cloths as the vibrations on the web get stronger.<br>
                 In your haste to free yourself, you cut deep into the skin of your entangled leg, you cry out in pain!<br>
                 {{ story.calcDmg(1,15,10,true);}}
-                ** Take {{= story.currDmg}} Damage (HP: {{= story.hp}})**<br>
                 Theres no time to feel bad for yourself, as you continue hacking away at the clothes.<br>
                 You free yourself and fall back down, <turn to="{{= story.getPageChar('forestEncounter2')}}">above you a large shape starts to appear with inhuman speed.</turn> 
             </paragraph>
@@ -380,7 +380,6 @@
             <br>
             <show paragraph="{{= story.getPageChar('forestEncounter8')}}">...</show>
             <paragraph id="forestEncounter8Oreo">
-                {{story.pushDisable("forestEncounter8",true);}}
                 You scream in pain as the fangs leave your body, a paralyzing feeling blossoms from your chest to the rest of your body, the poison is acting fast.<br>
                 Before you are completely paralyzed, you hear shouting somewhere above you.<br>
                 The forest ceiling is illuminated in strange lights as your hear the squeaky voices of the fairies casting spells to distract the beast.<br>
@@ -389,13 +388,12 @@
                 <show paragraph="{{= story.getPageChar('forestEncounter9')}}">...</show>
             </paragraph>
             <paragraph id="forestEncounter9Oreo">
-                {{story.pushDisable("forestEncounter9",true);}}
                 Suddenly a strange deep voice bellows: "Be gone foul beast, back to your darkness!"<br>
                 To this the Spider responds, it appears as if it wants to flee but is undecided, it's prey is immobilized and ripe for the taking, and such a plump prey it is!<br>
                 You hear the deep voice yell again and a brown glowing ball is flung at the Spider, leaving a trail of light behind it.<br>
                 <br>
                 The Spider is hit and trembles from the force of it. It raises it's ugly head and peers at the old Wizard.<br>
-                Decided on a course of action the Spider suddenly leaps from you and hits hard one of the tree trunks above you.<br>
+                Decided on a course of action, the Spider suddenly leaps from you and lands hard on one of the tree trunks above you.<br>
                 It quickly latches on to one of it's webs and scurries away so fast, you're not even sure what tree it was on a moment ago, it disappears into the darkness above.<br>
                 <br>
                 Lying on the floor breathing hard, you struggle to stay awake as the poison takes it's toll on your body.<br>
@@ -406,7 +404,6 @@
         </page>
 
         <paragraph id="forestEncounter3Oreo">
-            {{story.pushDisable("forestEncounter3",true);}}
             The Mammoth Spider moves to grab you but misses, you think you hear a slight frustrated hiss. Clearly this creature is not used to anything escaping it's grasp.<br>
             You can:<br>
             {{? story.hasWep }}
@@ -416,17 +413,14 @@
             * Make <turn to="preDeathByForestSpider2">a run for it</turn> towards the temple and the fire in the distance.
         </paragraph>
         <paragraph id="forestEncounter5Oreo">
-            {{story.pushDisable("forestEncounter5",true);}}
             {{story.pushDisable("forestEncounter4",true);}}
             You spring to your feet and speak the spell for fire.<br>
             However the Spider is so fast you barely have time to finish the spell as he gets close enough to hit you hard with one of it's forward legs.<br>
             Pain erupts in your body.<br>
             {{ story.calcDmg(1.2, 10, 15, true);}}
-            ** Take {{= story.currDmg }} Damage (HP: {{= story.hp}})**<br>
             <show paragraph="{{= story.getPageChar('isDedForestEncounter1')}}">...</show>
         </paragraph>
         <paragraph id="isDedForestEncounter1Oreo">
-            {{story.pushDisable("isDedForestEncounter1",true);}}
             {{? story.isDed() }}
             {{story.turnTo('deathByForestSpider');}}
             {{??}}
@@ -434,24 +428,23 @@
             You quickly speak the spell to force push the Spider away.<br>
             The Spider flings back, but it is clear it's not giving up, it pounces straight at you with incredible speed, you barely have time to react.<br>
             {{ story.calcDmg(0.9, 15, 55, true);}}<br>
-            ** Take {{= story.currDmg}} Damage (HP: {{= story.hp}})**<br>
             <show paragraph="{{= story.getPageChar('forestEncounter7')}}">...</show>
             {{?}}
         </paragraph>
         <paragraph id="isDedForestEncounter2Oreo">
-            {{story.pushDisable("isDedForestEncounter2",true);}}
             {{? story.isDed() }}
                 {{story.turnTo('deathByForestSpider');}}
             {{??}}
             You quickly counter hit the Spider again, catching the edge of it's lower left eye.<br>
-            The Spider flings back, but it is clear it's not giving up, it pounces straight at you with incredible speed, you barely have time to react.<br>
+            The Spider flings back, but it is clear it's not giving up, it pounces straight at you with incredible speed, you barely have time to react. Your {{= story.currWep}} files out of your hand and into the darkness.<br>
+            {{ story.removeFromInventory("steelSword");}}
+            {{ story.hasWep = false;}}
+            {{ story.currWep = "";}}
             {{ story.calcDmg(0.9, 15, 55, true);}}<br>
-            ** Take {{= story.currDmg}} Damage (HP: {{= story.hp}})**<br>
             <show paragraph="{{= story.getPageChar('forestEncounter7')}}">...</show>
             {{?}}
         </paragraph>
         <paragraph id="forestEncounter7Oreo">
-            {{story.pushDisable("forestEncounter7",true);}}
             {{? story.isDed() }}
                 {{story.turnTo('deathByForestSpider');}}
             {{??}}
@@ -461,16 +454,16 @@
         </paragraph>
         <paragraph id="forestEncounter4Oreo">
             {{story.pushDisable("forestEncounter5",true);}}
-            {{story.pushDisable("forestEncounter4",true);}}
             As you continue your roll, you get into a crouching position and slash at the Spider's leg, your {{= story.currWep }} connects and you hear a small crunch.<br>
             The Spider quickly counters with one of it's other forward legs, hitting you hard on your shoulder.<br>
             Pain erupts in your body.<br>
             {{ story.calcDmg(0.8, 10, 25, true);}}
-            ** Take {{= story.currDmg }} Damage (HP: {{= story.hp}})**<br>
             <show paragraph="{{= story.getPageChar('isDedForestEncounter2')}}">...</show>
         </paragraph>
 
         <paragraph id="flailForestEncounter1Oreo">
+            {{ story.disable('yellForHelpForestEncounter1Oreo');}}
+            {{ story.disable('examineForestEncounter1Oreo');}}
             You recall the incantation in your head. You whisper the words and feel your pulse quicken. Blood is flowing hard through your veins and you feel incredibly hot.<br>
             You brace yourself and start shaking your body, hard, pulling with your free leg out of the sticky branches.<br>
             You struggle for a whole minute with as little results as before the spell.<br>
@@ -483,11 +476,15 @@
             {{? story.isDeathBySpider() }}
             {{story.turnTo('preDeathByForestSpider1');}}
             {{??}}
-            Should you try again or do something else?
+            {{story.enable('yellForHelpForestEncounter1Oreo');}}
+            {{story.enable('examineForestEncounter1Oreo');}}
+            Should you try something else?
             {{?}}
         </paragraph>
 
         <paragraph id="yellForHelpForestEncounter1Oreo">
+            {{ story.disable('flailForestEncounter1Oreo');}}
+            {{ story.disable('examineForestEncounter1Oreo');}}
             You yell for Hamburger and LentilSoup loudly, your voice reverberates through the empty woods, your hear nothing but silence in return.<br>
             You're starting to get a bad feeling about this.<br>
             <show paragraph="yellForHelpForestEncounter2Oreo">...</show>
@@ -498,7 +495,9 @@
             {{? story.isDeathBySpider() }}
             {{story.turnTo('preDeathByForestSpider1');}}
             {{??}}
-            Should you try again or do something else?
+            {{story.enable('flailForestEncounter1Oreo');}}
+            {{story.enable('examineForestEncounter1Oreo');}}
+            Should you try something else?
             {{?}}
         </paragraph>
 
@@ -515,7 +514,6 @@
             <br>
             <show paragraph="preDeathByForestSpider3">...</show>
             <paragraph id="preDeathByForestSpider3">
-                {{story.pushDisable("preDeathByForestSpider3",false);}}
                 You are suddenly grabbed in the air by two hairy legs, and feel a sharp pain in your chest, you thrash around, but almost instantaneously you feel the strength ebbing from you.<br>
                 <turn to="deathByForestSpider">...</turn>
             </paragraph>
@@ -536,15 +534,147 @@
             {{story.endGame();}}
         </page>
 
+        <!-- Temple -->
+        <page id="temple1">
+            Dizzying light above you as you attempt to open your eyes, you shield your eyes and try to open them slightly again.<br>
+            After the darkness of the forest the temple is very well lit with some bright white light, it seems very unnatural.<br>
+            <br>
+            {{= story.currChar}} is awake! Come here Hamburger!<br>
+            You look to your right and see LentilSoup sitting on the nightstand next to you looking relieved. I was sure you were going to die! She proclaimed a bit teary eyed.<br>
+            No one survives a Mammoth Spiders bite! There must be something special about you!<br>
+            Hamburger files into the room, he sits next to his mate.<br>
+            <br>
+            (Hamburger)<br>
+            Nothing special, just plain luck, that monster's bite missed your heart by a few inches. You were lying here like a corpse for 3 days.<br>
+            The Wizard helped you heal, if it wasn't for him you'd be dead for certain.<br>
+            <br>
+            You should drink this, he points at some green ooze sitting on your nightstand, the Wizard prepared it for you. He doesn't like strangers dying in his home.<br>
+            <br>
+            You sit up, still feeling very weak and dizzy, you pick up the green vial, it looks like some kind of crushed green herbs.<br>
+            You open the vial and take a whiff, a strong stink enters your nose, you cough, what is this thing? Your nose feels like it's on fire.<br>
+            <br>
+            I call it *Szhug*, a deep familiar voice proclaims from the doorway, you turn to see the Wizard standing there with his brown robes.<br>
+            Now drink up, it has the most amazing healing properties, one of my own inventions.<br>
+            <turn to="temple2">You pinch your nose, and drink the foul liquid</turn>.
+        </page>
+
+        <page id="temple2">
+            Heat passes through your body, you crumple up into a ball as your throat and belly burn with intensity.<br>
+            <br>
+            (Hamburger)<br>
+            That's probably going to hurt as much coming out as it did going in.<br>
+            <br>
+            (LentilSoup)<br>
+            Oh give it a rest, can't you see {{= story.currChar}} is in agony?<br>
+            <br>
+            (Falafel Wizard)<br>
+            Agony? From what? This thing?<br>
+            It's just a bit of "honey"! he proclaims with a large smile.<br>
+            <br>
+            The Wizard chugs down the rest of the vial and smiles broadly. See, just some dessert!<br>
+            <br>
+            When you're feeling a bit better come see me, the Wizard continues. He turns to leave, looks back at the fairies, they both get up and follow him out.<br>
+            <show paragraph="templeHeal">...</show>
+            <paragraph id="templeHeal">
+                After a few moments you start to feel better, the burning sensation is still deep in your mouth and throat, but it's much more bearable now.<br>
+                {{ story.heal(75); }}
+                <turn to="temple3">Get up and go see the Wizard</turn>.
+            </paragraph>
+        </page>
+
+        <page id="temple3">
+            You exit your room, and follow the corridor to the main Temple room, around you are statues of strange looking pouches each holding a few balls inside them.<br>
+            This is quite a strange religion you think.<br>
+            <br>
+            You enter the main room to see the Wizard sitting on a big chair, sitting next to him is a giant brown-white bear, which he is petting serenely.<br>
+            The bear is busy with a big red bone it is chewing on, not minding you one bit.<br>
+            LentilSoup and Hamburger are flying next to the bear, LentilSoup looks anxiously at you.<br>
+            <br>
+            (Falafel Wizard)<br>
+            Aha, so you have healed, but this does not mean you are out of danger yet!<br>
+            You see, I don't like strangers disturbing the creatures of this forest, you're lucky the fairies were here to vouch for you or I wouldn't have even bothered to save you at all...<br>
+            <br>
+            ({{= story.currChar}})<br>
+            * <show paragraph="templeConvo1">I thank you for your help oh wise and beautiful Wizard of the Great Falafel!</show><br>
+            * <show paragraph="templeConvo2">Disturbing "forest creatures"? Your "creature" nearly ate me!</show><br>
+            * <show paragraph="templeConvo3">I didn't ask for your help, though I thank you nonetheless.</show>
+            <paragraph id="templeConvo1">
+                {{ story.pushDisable("templeConvo2",false);}}
+                {{ story.pushDisable("templeConvo3",false);}}
+                {{ story.falafelWizardMood =- 1;}}
+                He looks at you with a suspicious eye, I don't much appreciate sarcasm, he says icily.<br>
+                A small silence ensues where you both eye each other.<br>
+                <br>
+                Finally LentilSoup pricks up and breaks the tension, please Wizard, this is {{= story.currChar}}, would you not help her?<br>
+                <br>
+                <turn to="temple4">...</turn>
+            </paragraph>
+            <paragraph id="templeConvo2">
+                {{ story.pushDisable("templeConvo1",false);}}
+                {{ story.pushDisable("templeConvo3",false);}}
+                {{ story.falafelWizardMood = 1;}}
+                Ha! He brightens, under his white bushy eyebrows you can see a small glint in his green-blue eyes.<br>
+                That it did! Though you probably wouldn't have made such a fine meal yourself, all bones and no meat!<br>
+                <br>
+                Hamburger chuckles and turns to the Wizard, so will you help {{= story.currChar}}, I really doubt this moron will manage much alone, as that "forest creature" proved!<br>
+                <turn to="temple4">...</turn>
+            </paragraph>
+            <paragraph id="templeConvo3">
+                {{ story.pushDisable("templeConvo1",false);}}
+                {{ story.pushDisable("templeConvo2",false);}}
+                {{ story.falafelWizardMood = 0;}}
+                Bah! So prickly you are, "I did not ask for any help", well you sure did need it!<br>
+                You have the fairies to thank for my help! I wouldn't have bothered with you otherwise.<br>
+                <br>
+                LentilSoup chimes in, alright, alright, {{= story.currChar}} said thanks, no need to be upset, so will you help? She looks at the Wizard with a strong gaze.<br>
+                <turn to="temple4">...</turn>
+            </paragraph>
+        </page>
+
+        <page id="temple4">
+            The Wizard stands up, his bear, sitting beside him, looks up at him for a bit, then goes back to his bone.<br>
+            Listen closely the Falafel Wizard proclaims! As I am not used to repeating myself! If you have any questions keep them to yourself, I can barely hear anything anyway, he winks at Hamburger.<br>
+            <br>
+            Many centuries ago in a far away land, there lived a Prince, he would spend his days surfing the great waves of Philipinia, at nights he would compete in the highest stakes tournaments, playing with Magic.<br>
+            It is said he was able to terraform entire planets and his production was mighty indeed. No one could compete with his prowess. But with his victories, so grew his arrogance.<br>
+            For he was not a graceful winner, and would often taunt his defeated foes!<br>
+            <br>
+            One night while playing with very powerful Magic, a stranger walked up to him.<br>
+            The stranger wearing a long black ragged cloak torn and weathered from years of use, with his hood covering most of his face said with a carefully long drawling voice.<br>
+            I've heard you were the champion here, he said. I've come to take your title away from you! Sit and play me, if you dare!<br>
+            The Prince looked at the ragged stranger, his snobby friends all laughed at the beaten down man, he didn't look like any match for the Prince!<br>
+            <br>
+            Be gone with you friend, said the Prince, I'll not bother with someone the likes of you.<br>
+            <br>
+            The stranger clearly agitated continued. Sir, I've come a long way I'm looking to fight the very best in Magic and they've pointed me to you, now play me, for you are surely to be defeated!<br>
+            Be gone with you I said! I've nothing to prove to you! You couldn't possibly beat me if you've tried! The Prince taunted, and yet he was eyeing the stranger carefully, trying to asses if he truly was a worthy opponent.<br>
+            The Prince's crowd laughed in disdain.<br>
+            The stranger, brimming with sweat and frustration took a seat next to the Prince and showed him his Magic.<br>
+            The Prince was impressed, but did not betray any of it, agitating his opponent could prove useful.<br>
+            <turn to="temple5">...</turn>
+        </page>
+
+        <page id="temple5">
+            The Wizard continued in his loud voice, reverberating through the temple, the bright lights all glistened around.<br>
+            <br>
+            And so a mighty Magic match was played that day, it is said that the stranger played better than anyone thought possible. But the stranger had one flaw.<br>
+            He could not control his emotions and would give in to the taunts and jeers by the Prince, and every time the stranger lost his focus, the Prince would take advantage!<br>
+            And so they played for 20 Days and 20 Nights, and finally, the Prince was victorious!<br>
+            After such a long battle the stranger got up, cursing to himself, he could have won, had he been more focused and not given in to the Prince's taunts. He looked at the Prince with hate in his eyes.<br>
+            You've beaten me through sheer luck he thought. He held out his hand to the Prince.<br>
+            <br>
+            The Prince eyed his the offered hand, considered it for a moment, then proclaimed for all to hear.<br>
+            T'was a simple match! The stranger gave a decent fight, but he was no match for me! The title of Magic Champion is still mine, and not to be taken by any such ragged stranger!<br>
+
+        </page>
+
         <!-- Global Paragraphs -->
         <paragraph id="startp1">
-            {{story.pushDisable("startp1",false);}}
             You pick yourself up and think, what to do? <br>
             <turn to="landForest">...</turn>
         </paragraph>
 
         <paragraph id="forestCheckAlive1">
-            {{story.pushDisable("forestCheckAlive1",false);}}
             At first glance it appears everyone is dead, however you brave forward to make sure. <br>
             ** Groan **<br>
             You quickly turn around to see Gerald of Rivia slightly moving.<br>
@@ -553,7 +683,6 @@
         </paragraph>
 
         <paragraph id="forestCheckAlive2">
-            {{story.pushDisable("forestCheckAlive2",false);}}
             You lean closer and turn him on his back. <br>
             ** Cough ** <br>
             You can hear his uneven breath and see the blood coming from his mouth, a tree branch is stuck mere inches from his heart halfway impaling him.<br>
@@ -567,7 +696,6 @@
         </paragraph>
 
         <paragraph id="forestDestiny">
-            {{story.pushDisable("forestDestiny",false);}}
             The Master Terraformer, he is your destiny! <br>
             <br>
             ** Wheeze ** <br>
@@ -579,7 +707,6 @@
         </paragraph>
 
         <paragraph id="cartFly">
-            {{story.pushDisable("cartFly",false);}}
             Suddenly, a rumble in the distance, you hear a mighty roar.<br>
             The ground shakes as a large shadow engulfs the cart.<br>
             <br>
@@ -589,7 +716,6 @@
         </paragraph>
 
         <paragraph id="ClearingFairies1">
-            {{story.pushDisable("ClearingFairies1",false);}}
             You quickly turn around, 
             {{? story.hasWep }}
             and reach to draw your weapon from it's sheath.
@@ -607,7 +733,6 @@
         </paragraph>
 
         <paragraph id="ClearingFairies2">
-            {{story.pushDisable("ClearingFairies2",false);}}
             The male puffs his chest and looks you down, raising his fists and a tiny voice he cries:<br>
             (Male Fairy)<br>
             Be gone from our clearing you overgrown cockhair!<br>
@@ -622,6 +747,7 @@
             * <turn to="ClearingFairiesConvo2">I mean you no harm, I just came to get some water.</turn><br>
         </paragraph>
 
+        
     </div>
 
     <div id="wrapper">
