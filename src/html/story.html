@@ -103,6 +103,22 @@
 
         </obj>
 
+        <obj id="tehinaHazil" inventoryName="TehinaHazil">
+            <action id="Examine">
+                ** The sword has intricate runes across the blade, showing falafel balls being thrown by a wizard **
+            </action>
+
+            <action id="Get">
+                <when>!story.isInInventory('steelSword')</when>
+                * Placed in sheath. *
+                {{ story.putInInventory('tehinaHazil'); }}
+                {{story.hasWep = true;}}
+                {{story.currWep = "TehinaHazil";}}
+            
+            </action>
+
+        </obj>
+
         <!-- Pages -->
         <page id="intro">
             ** Blackness fades away into a hint of light, you see a man, sitting bound up in the cart staring straight at you. **
@@ -633,7 +649,7 @@
 
         <page id="temple4">
             The Wizard stands up, his bear, sitting beside him, looks up at him for a bit, then goes back to his bone.<br>
-            Listen closely the Falafel Wizard proclaims! As I am not used to repeating myself! If you have any questions keep them to yourself, I can barely hear anything anyway, he winks at Hamburger.<br>
+            Listen closely the Falafel Wizard proclaims! As I am not used to repeating myself! If you have any questions, keep them to yourself! I can barely hear anything anyway, he winks at Hamburger.<br>
             <br>
             Many centuries ago in a far away land, there lived a Prince, he would spend his days surfing the great waves of Philipinia, at nights he would compete in the highest stakes tournaments, playing with Magic.<br>
             It is said he was able to terraform entire planets and his production was mighty indeed. No one could compete with his prowess. But with his victories, so grew his arrogance.<br>
@@ -641,10 +657,10 @@
             <br>
             One night while playing with very powerful Magic, a stranger walked up to him.<br>
             The stranger wearing a long black ragged cloak torn and weathered from years of use, with his hood covering most of his face said with a carefully long drawling voice.<br>
-            I've heard you were the champion here, he said. I've come to take your title away from you! Sit and play me, if you dare!<br>
-            The Prince looked at the ragged stranger, his snobby friends all laughed at the beaten down man, he didn't look like any match for the Prince!<br>
+            I've heard you were the champion here, he said. I've come to take the title away from you! Sit and play me, if you dare!<br>
+            The Prince looked at the ragged stranger, his snobby friends sniggered at his beaten down clothes, he didn't look like any match for the Prince!<br>
             <br>
-            Be gone with you friend, said the Prince, I'll not bother with someone the likes of you.<br>
+            Be gone with you friend, said the Prince, I'll not be bothered with someone the likes of you.<br>
             <br>
             The stranger clearly agitated continued. Sir, I've come a long way I'm looking to fight the very best in Magic and they've pointed me to you, now play me, for you are surely to be defeated!<br>
             Be gone with you I said! I've nothing to prove to you! You couldn't possibly beat me if you've tried! The Prince taunted, and yet he was eyeing the stranger carefully, trying to asses if he truly was a worthy opponent.<br>
@@ -665,7 +681,53 @@
             <br>
             The Prince eyed his the offered hand, considered it for a moment, then proclaimed for all to hear.<br>
             T'was a simple match! The stranger gave a decent fight, but he was no match for me! The title of Magic Champion is still mine, and not to be taken by any such ragged stranger!<br>
+            Good Game, Easy! The Prince's friends announced, with disdain in their voices.<br>
+            <br>
+            The stranger turned to leave, when someone from the jeering crowd threw something at his head. The piece of food exploded in mid air before hitting the stranger with a magical poof, spraying the audience.<br>
+            The crowd went silent, the stranger turned around and faced the Prince, he removed his hood, and all could see that the stranger was none other than the mighty magician Noam of Hefio!<br>
+            <br>
+            An audible gasp went through the crowd, the Prince had turned white, he would not have treated the stranger so if he had known.<br>
+            <turn to="temple6">...</turn>
+        </page>
 
+        <page id="temple6">
+            The sky instantly darkened and thunder could be heard in the distance. Noam seemed much bigger and much more threatening all of the sudden, as if he grew in size.<br>
+            I damn you, Terraformer! I damn your family Surfboarder! While I walk this earth you shall be nothing but a ghost, your land shall be layed to ruins and your people shall perish from war and famine.<br>
+            Thus I Noam of Heifo have spoken!<br>
+            I curse you to the end of days, until the new sun will rise and the one they call {{= story.currChar}} will walk the earth. Until then, you shall be no more!<br>
+            Thus I Noam of Heifo have spoken!<br>
+            <br>
+            Uttering the last syllable a lightning rained from the heavens and hit the Prince. Panic ensued, people were fleeing as a terrible lightning storm ravaged the land.<br>
+            This lightning storm lasted for 20 days and 20 nights, wrecking havoc amongst the kingdom.<br>
+            The Prince was nowhere to be found.<br>
+            <br>
+            The following centuries were very rough for the Philipinians as mutiny and war ravaged the entire lands. Crops barely yielded any food, and sickness was plentiful.<br>
+            The people either left or perished, and the once great kingdom was reduced to rubble. Forests begun to take back the land a few centuries past, but now a blight has taken hold of all things in the land bringing with it many foul creatures.<br>
+            The blight is progressing, corrupting all living things in it's path, leaving room only for rot, death and decay.<br>
+            <br>
+            In their hight the kingdom of Philipinia was a beacon of hope for all, but now it seems all is lost.<br>
+            <turn to="temple7">...</turn> 
+        </page>
+
+        <page id="temple7">
+            So you see {{= story.currChar}} we need you, we need you to lift the curse that plagues this once prosperous kingdom and bring back life to these parts, for the Mammoth Spiders are not the worst of the creatures 
+            that walk these lands, devils of all sorts are lurking about, and I fear even my Temple shall soon be overrun.<br>
+            <br>
+            So what do you say {{= story.currChar}}?<br>
+            <br>
+            ({{= story.currChar}})<br>
+            Well it doesn't seem like you leave me much choice does it? Death and ruin to all if I don't lift the curse from this Price.<br>
+            <br>
+            (Falafel Wizard)<br>
+            Not much choice at all. You must do this. It is your destiny!<br>
+            I will not let you go alone though, the fairies will accompany you your quest.<br>
+            <br>
+            Hamburger was starting to protest when LentilSoup gave him a large wack on the head, he threw her an angry look and sat silent.<br>
+            {{? story.falafelWizardMood >= 0}}
+            I shall also grant you my blade, <interact with="tehinaHazil">TehinaHazil</interact> may it aid you in your next battles.<br>
+            {{?}}
+            {{? story.falafelWizardMood > 0}}
+            
         </page>
 
         <!-- Global Paragraphs -->
