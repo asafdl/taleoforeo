@@ -17,6 +17,7 @@
         <initscript>
             story.temp;
             story.toDisable = [];
+            story.maxHp = 150;
             story.hp = 100;
             story.hasWep = false;
             story.currWep = "";
@@ -47,8 +48,12 @@
             };
             story.heal = function(hp) {
                 story.hp += hp;
+                story.hp = ((story.maxHp > story.hp) ? story.hp : story.maxHp);
+                let printMsg = story.hp;
+                if(story.hp === story.maxHp)
+                    printMsg += "(MAX)";
                 story.print(function(){
-                    return "** Heal " + hp + " (HP: " + story.hp + ") **";
+                    return "** Heal " + hp + " (HP: " + printMsg + ") **";
                 });
             };
             story.pushDisable = function(str, isChar) {
@@ -103,18 +108,37 @@
 
         </obj>
 
-        <obj id="tehinaHazil" inventoryName="TehinaHazil">
+        <obj id="hazilTehina" inventoryName="HazilTehina">
             <action id="Examine">
                 ** The sword has intricate runes across the blade, showing falafel balls being thrown by a wizard **
             </action>
 
             <action id="Get">
-                <when>!story.isInInventory('steelSword')</when>
+                <when>!story.isInInventory('hazilTehina')</when>
                 * Placed in sheath. *
-                {{ story.putInInventory('tehinaHazil'); }}
+                {{ story.putInInventory('hazilTehina'); }}
                 {{story.hasWep = true;}}
-                {{story.currWep = "TehinaHazil";}}
+                {{story.currWep = "hazilTehina";}}
             
+            </action>
+
+        </obj>
+
+        <obj id="szhug" inventoryName="Szhug">
+            <action id="Examine">
+                ** One look at the foul green vial and you are reminded of the burning sensation, best save this for emergencies only! **
+            </action>
+
+            <action id="Get">
+                <when>!story.isInInventory('szhug')</when>
+                * Placed in sheath. *
+                {{ story.putInInventory('szhug'); }}
+            </action>
+
+            <action id="Use">
+                {{story.pushDisable('szhug');}}
+                {{story.heal(75);}}
+                {{story.removeFromInventory('szhug');}}
             </action>
 
         </obj>
@@ -420,7 +444,12 @@
         </page>
 
         <paragraph id="forestEncounter3Oreo">
-            The Mammoth Spider moves to grab you but misses, you think you hear a slight frustrated hiss. Clearly this creature is not used to anything escaping it's grasp.<br>
+            The Mammoth Spider moves to grab you but misses, 
+            {{? story.forestSpiderDanger > 0}}
+            but since you rocked the web, it was well prepared, his strong hairy leg hits your side, 
+            {{story.calcDmg(1,10,5,true);}}
+            {{?}}
+            you think you hear a slight frustrated hiss. Clearly this creature is not used to anything escaping it's grasp.<br>
             You can:<br>
             {{? story.hasWep }}
             * <show paragraph="{{= story.getPageChar('forestEncounter4')}}">Counter with your {{= story.currWep }}.</show><br>
@@ -600,6 +629,7 @@
 
         <page id="temple3">
             You exit your room, and follow the corridor to the main Temple room, around you are statues of strange looking pouches each holding a few balls inside them.<br>
+            The walls are adorned with many paintings of brown Wizards flinging balls of power, fighting terrible monsters.<br>
             This is quite a strange religion you think.<br>
             <br>
             You enter the main room to see the Wizard sitting on a big chair, sitting next to him is a giant brown-white bear, which he is petting serenely.<br>
@@ -685,19 +715,19 @@
             Good Game, Easy! The Prince's friends announced, with disdain in their voices.<br>
             <br>
             The stranger turned to leave, when someone from the jeering crowd threw something at his head. The piece of food exploded in mid air before hitting the stranger with a magical poof, spraying the audience.<br>
-            The crowd went silent, the stranger turned around and faced the Prince, he removed his hood, and all could see that the stranger was none other than the mighty magician Noam of Hefio!<br>
+            The crowd went silent, the stranger turned around and faced the Prince, he removed his hood, and all could see that the stranger was none other than the mighty magician Roby the Constructor!<br>
             <br>
             An audible gasp went through the crowd, the Prince had turned white, he would not have treated the stranger so if he had known.<br>
             <turn to="temple6">...</turn>
         </page>
 
         <page id="temple6">
-            The sky instantly darkened and thunder could be heard in the distance. Noam seemed much bigger and much more threatening all of the sudden, as if he grew in size.<br>
+            The sky instantly darkened and thunder could be heard in the distance. Roby seemed much bigger and much more threatening all of the sudden, as if he grew in size.<br>
             I damn you, Terraformer! I damn your family Surfboarder! While I walk this earth you shall be nothing but a ghost, your land shall be layed to ruins and your people shall perish from war and famine.<br>
-            Thus I Noam of Heifo have spoken!<br>
+            Thus I Roby the Constructor have spoken!<br>
             His voice seemed to come from the sky and thunder itself!<br>
             I curse you to the end of days, until the new sun will rise and the one they call {{= story.currChar}} will walk the earth. Until then, you shall be no more!<br>
-            Thus I Noam of Heifo have spoken!<br>
+            Thus I Roby the Constructor have spoken!<br>
             <br>
             Uttering the last syllable a lightning blot rained from the heavens and hit the Prince. Panic ensued, people were fleeing as a terrible lightning storm ravaged the land.<br>
             This lightning storm lasted for 20 days and 20 nights, wrecking havoc amongst the kingdom.<br>
@@ -718,18 +748,105 @@
             So what do you say {{= story.currChar}}?<br>
             <br>
             ({{= story.currChar}})<br>
-            Well it doesn't seem like you leave me much choice does it? Death and ruin to all if I don't lift the curse from this Price.<br>
+            Well it doesn't seem like you leave me much choice does it? Death and ruin to all if I don't lift the curse from this Prince.<br>
             <br>
             (Falafel Wizard)<br>
             Not much choice at all. You must do this. It is your destiny!<br>
             I will not let you go alone though, the fairies will accompany you your quest.<br>
             <br>
-            Hamburger was starting to protest when LentilSoup gave him a large wack on the head, he threw her an angry look and sat silent.<br>
+            Hamburger was starting to protest when LentilSoup gave him a large wack on the head, he threw her an angry look, but kept quiet.<br>
             {{? story.falafelWizardMood >= 0}}
-            I shall also grant you my blade, <interact with="tehinaHazil">TehinaHazil</interact> may it aid you in your next battles.<br>
+            I shall also grant you my blade, <interact with="hazilTehina">HazilTehina</interact> may it aid you in your next battles.<br>
+            It is made from the best Yamaha steel, forged in the great House of Acacia.<br>
+            <br>
             {{?}}
             {{? story.falafelWizardMood > 0}}
+            Take this as well, he reaches inside his brown robe, and takes out another of the green vials called <interact with="szhug">Szhug</interact> he hands it to you.<br>
+            {{?}}
+            <turn to="temple8">Now it is time you went on your way!</turn>
+        </page>
 
+        <page id="temple8">
+            Suddenly a female voice from another room shouts "Faaaaaaal"! Come here, you promised to help me with the garden!<br>
+            The bear quickly gets up and runs towards the back room, the Falafel Wizard speaks fast now.<br>
+            <br>
+            You must go through the desert to find the Green Enchantress, only she can help you lift the curse!<br>
+            Unfortunately she and I are not on speaking terms, so don't tell her I sent you!<br>
+            <br>
+            Another long "Faaaalll!!!", this one louder than the last.<br>
+            <br>
+            Now go, trust the fairies, except Hamburger, he's kind of an asshole!<br>
+            The Falafel Wizard hurries towards the female voice in the back. Leaving you to find your way out.<br>
+            As you turn to leave you hear his deep rumbling voice say, "Good Luck {{= story.currChar}}".<br>
+            <br>
+            You lead to fairies outside of the temple, it is time you were on your way, lifting curses, destiny, sounds like a load of bullshit to you.<br>
+            But where else will you go? <br>
+            You are completely helpless in this big forest, and the fairies will only help you because they believe you are the {{= story.currChar}} in that tale.<br>
+            You look at the fairies, Hamburger with his usual scowl, and LentilSoup with her charming smile.<br>
+            Well, you sigh, I guess <turn to="wayToDesert1">we're going to find the Green Enchantress</turn>. As you start walking you look back at the strange Falafel Temple, you feel like you're going to miss it here.
+        </page>
+
+        <!-- way to desert -->
+        <page id="wayToDesert1">
+            It's night, a tiny fire lights the gloomy forest, you gathered up some small dead branches, and LentilSoup ignited the fire with a small spark from her hands.<br>
+            You've left the Temple of Falafel 3 days past, walking in this dense forest. Now that you have been told you can see signs of the corruption and blight the Falafel Wizard has told you about.<br>
+            You haven't encountered any animals in on the way, but at night you can hear scurrying around you, and howls in the distance.<br>
+            <br>
+            Traveling with the fairies is pretty pleasant, mainly because of LentilSoup which can talk about this and that for days. Hamburger sometimes butts in the conversation to prove a point, and argues his point profusely.<br>
+            He can get very stubborn you notice, you've learned that if you want him to shut up you just agree with him for a bit.<br>
+            <br>
+            At first you were a bit afraid to sleep in the open, imagining terrible yellow eyes coming at you from the darkness above. But LentilSoup calmed you.<br>
+            There's no need to be afraid she said, the Spider will only come down once something is snared by it's web, all we have to do is avoid it!<br>
+            <br>
+            After 5 days of walking, with seeing no end to this forest you start to get upset.<br>
+            ({{= story.currChar}})<br>
+            Do you even know, Hamburger, where you are leading us?!<br>
+            <br>
+            (Hamburger)<br>
+            Of course I do! I was flying around these woods before you were even a baby shitting yourself!<br>
+            <br>
+            He answered confidently but when he wasn't looking you could see he was unsure of himself, <turn to="wayToDesert2">you were lost.</turn>
+        </page>
+
+        <page id="wayToDesert2">
+            After 12 days of walking, your food was starting to run low, you haven't seen any animals, and even if you did, you don't think you would want to eat these corrupted beings.<br>
+            The main food you had, other than the few nuts and berries the fairies somehow always found, was these strange little brown balls the Falafel Wizard has given you.<br>
+            But even that was growing short. Despair starts to set in on the party, as the forest seems just as dense as ever, and Hamburger seems more distraught every day.<br>
+            <br>
+            Suddenly, from the silent forest some very strange noises are carried to you.<br>
+            LentilSoup looks at Hamburger which looks at you, you shrug, and move towards the noises.<br>
+            <show paragraph="forestNymph1">...</show>
+            <paragraph id="forestNymph1">
+                As you start getting closer you can hear that these noises are, in fact, words, said loud and clear by a female singsong voice.<br>
+                That's right! Now breath! Let the forests energy flow through your bodies!<br>
+                <br>
+                You glance at Hamburger, he has a strange look on his face, you shoot him a inquiring gaze but he just shakes his head.<br>
+                In the distance you can hear the lovely voice continue her instructions: That's right! Now stretch your wings! As high up as they would go! Yes!<br>
+                You decide to <turn to="forestNymph2">move in closer to get a better look.</turn>
+            </paragraph>
+        </page>
+
+        <page id="forestNymph2">
+            In a tiny clearing in the middle of the forest, the most unusual sight unfolds in front of your eyes. A purple woman, dressed in green, but her clothes don't seem to be clothes but actual leaves coming out of her body.<br>
+            Even more amazing than that is that he looks like she is instructing a bunch of bees! The purple woman is bending he body in strange ways, flexing her hard muscles and the bees are all in front of her, copying her every move!<br>
+            <br>
+            LentilSoup suddenly gasps, Hamburger! Isn't that...?<br>
+            Hamburger nods, he flies towards the purple woman, giving the lesson.<br>
+            You and LentilSoup follow him.<br>
+            <show paragraph="forestNymph3">...</show>
+            <paragraph id="forestNymph3">
+                (Hamburger)<br>
+                Hail Ibex!<br>
+                <br>
+                Ibex stops with her body mid entanglement, she looks at Hamburger, all the bees are looking at him too.
+                (Ibex)<br>
+                Hamburger, you son of a bitch! I haven't seen you in ages! Where have you been?<br>
+                Ibex disentangles herself gracefully and turns to her class.<br>
+                Alright, now remember to breath! I will see you next week. She bows to the bees, and they all bow back in unison.<br>
+                <br>
+                You have to blink a few times and rub your eyes to make sure this is real, as some of the bees grab small bags left in the grass and fly away buzzing as they go.<br>
+                <turn to="forestNymph4">...</turn> 
+            </paragraph>
         </page>
 
         <!-- Global Paragraphs -->
