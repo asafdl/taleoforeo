@@ -653,7 +653,7 @@
                 <br>
                 Finally LentilSoup pricks up and breaks the tension, please Wizard, this is {{= story.currChar}}, would you not help her?<br>
                 <br>
-                <turn to="temple4">...</turn>
+                <turn to="templeTest">...</turn>
             </paragraph>
             <paragraph id="templeConvo2">
                 {{ story.pushDisable("templeConvo1",false);}}
@@ -673,8 +673,46 @@
                 You have the fairies to thank for my help! I wouldn't have bothered with you otherwise.<br>
                 <br>
                 LentilSoup chimes in, alright, alright, {{= story.currChar}} said thanks, no need to be upset, so will you help? She looks at the Wizard with a strong gaze.<br>
+                <turn to="templeTest">...</turn>
+            </paragraph>
+        </page>
+
+        <page id="templeTest">
+            Beh, he continues, looking at you with a sharp eye. You think you're so clever then answer me this!<br>
+            And if you fail, you shall be destroyed!<br>
+            The Falafel Wizard starts reciting a well rehearsed riddle:<br>
+            5 wanderers stand a the beginning of a cave, they only have 1 torch.<br>
+            The cave is thin and in order to get to the other side they can only go in pairs, but the cave is also dark, and they need the torch to travel with them at all times.<br>
+            The first wanderer can travel the cave within 5 minutes!<br>
+            The second, in 2.<br>
+            The third, in 7.<br>
+            The fourth in 1 minute.<br>
+            The fifth in 10!<br>
+            Tell me now oh great traveler, what is the fastest time the entire party is able to pass through the cave?<br>
+            ({{= story.currChar}})<br>
+            * <show paragraph="templeTestWrong">22 minutes!</show><br>
+            * <show paragraph="templeTestWrong">27 minutes!</show><br>
+            * <show paragraph="templeTestWrong">28 minutes!</show><br>
+            * <show paragraph="templeTestRight">23 minutes!</show><br>
+
+            <paragraph id="templeTestWrong">
+                Hah! You fool! The Falafel Wizard seems to grow in size as the lights around the main hall begin to flicker and wane.<br>
+                You have been defeated by the Mammoth Spider, and shown that you lack strength!<br>
+                You have angered me in your speech and shown you have flittering wisdom!<br>
+                And finally you have failed my riddle, and shown despicable intelligence!<br>
+                With every sentence the room becomes darker and darker, your heart starts to pound as you reach for your sword, but then remember you lost it.<br>
+                The red eyes of the Wizard's bear suddenly light up with malevolence, the bear runs right at you!<br>
+                You try to duck away but he is on you in an instant, in the background you hear LentilSoup's horrified scream, but it fades away fast, and so does everything else.<br>
+                You die.<br>
+                {{ story.endGame();}}
+            </paragraph>
+
+            <paragraph id="templeTestRight">
+                {{ story.pushDisable("templeTestWrong",false);}}
+                Hah! You managed to guess that one, but I guess being correct is being correct.<br>
                 <turn to="temple4">...</turn>
             </paragraph>
+
         </page>
 
         <page id="temple4">
@@ -828,7 +866,9 @@
 
         <page id="forestNymph2">
             In a tiny clearing in the middle of the forest, the most unusual sight unfolds in front of your eyes. A purple woman, dressed in green, but her clothes don't seem to be clothes but actual leaves coming out of her body.<br>
-            Even more amazing than that is that he looks like she is instructing a bunch of bees! The purple woman is bending he body in strange ways, flexing her hard muscles and the bees are all in front of her, copying her every move!<br>
+            Even more amazing than that is that he looks like she is instructing a bunch of bees! About 3 dozen bees are lined up on purple mushrooms in front of the purple woman!<br>
+            The purple woman is bending her body in strange ways, flexing her hard muscles and the bees are all in front of her, copying her every move!<br>
+            Feel the flow of air enter your body she exclaims with very little effort considering her body is entangled like a bagel.<br>
             <br>
             LentilSoup suddenly gasps, Hamburger! Isn't that...?<br>
             Hamburger nods, he flies towards the purple woman, giving the lesson.<br>
@@ -838,15 +878,28 @@
                 (Hamburger)<br>
                 Hail Ibex!<br>
                 <br>
-                Ibex stops with her body mid entanglement, she looks at Hamburger, all the bees are looking at him too.
+                Ibex stops with her body mid entanglement, she looks at Hamburger, all the bees stop mid pose struggling to stay there, they are looking at him too.
                 (Ibex)<br>
                 Hamburger, you son of a bitch! I haven't seen you in ages! Where have you been?<br>
                 Ibex disentangles herself gracefully and turns to her class.<br>
-                Alright, now remember to breath! I will see you next week. She bows to the bees, and they all bow back in unison.<br>
+                Alright, now remember to practice your breathing! I will see you next week. She bows to the bees, and they all bow back in unison.<br>
                 <br>
                 You have to blink a few times and rub your eyes to make sure this is real, as some of the bees grab small bags left in the grass and fly away buzzing as they go.<br>
                 <turn to="forestNymph4">...</turn> 
             </paragraph>
+        </page>
+
+        <page id="forestNymph4">
+            The purple woman, Ibex, is around 1.5 meters tall with well muscled slim frame, her red eyes are big and captivating.<br>
+            She speaks to Hamburger with a beautiful melodious voice, like the sound of bluejays the birds singing in the trees.<br>
+            <br>
+            After Hamburger has filled her in on you and your mission, she turns to you and smiles.<br>
+            (Ibex)<br>
+            So you're {{= story.currChar}}... She looks at your face intently, her strange red eyes seem to pierce right through you, you feel uncomfortable
+            So I understand you're looking for the Green Enchantress, you'll need to get to the desert for that, what are you doing all the way here?<br>
+            <br>
+
+
         </page>
 
         <!-- Global Paragraphs -->
