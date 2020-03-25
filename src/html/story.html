@@ -56,7 +56,7 @@
                     return "** Heal " + hp + " (HP: " + printMsg + ") **";
                 });
             };
-            story.pushDisable = function(str, isChar) {
+            story.pushDisable = function(str, isChar = false) {
                 if(isChar)
                     story.toDisable.push(story.getPageChar(str));
                 else
@@ -149,7 +149,6 @@
         </page>
 
         <page id="start" class="first">
-            {{ story.pushDisable("pg1Pitz");}}
             (Mystery Man) <br>
             Hey you! You're finally awake!<br>
             <br>
@@ -161,8 +160,8 @@
             (Hero) <br>
             * I'm <turn to="pg1Oreo">Oreo The Warrior Priestess</turn>.<br>
             * I'm <turn to="pg1Edge">xXxPussySlayer69xXx The Edgelord</turn>.<br>
-            * I'm <turn to="pg1Pitz">Pitz The Evil Rouge</turn>.<br>
         </page>
+        <!-- * I'm <turn to="pg1Pitz">Pitz The Evil Rouge</turn>.<br> -->
         <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
         <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
 
