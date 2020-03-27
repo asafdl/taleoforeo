@@ -158,17 +158,15 @@
             My name is Gerald of Rivia, who are you?
             <br><br>
             (Hero) <br>
-            * I'm <turn to="{{= story.getPageChar('p1') }}">Oreo The Warrior Priestess</turn>.<br>
-            * I'm <turn to="{{= story.getPageChar('p1') }}">xXxPussySlayer69xXx The Edgelord</turn>.<br>
-            * I'm <turn to="{{= story.getPageChar('p1') }}">Pitz The Evil Rouge</turn>.<br>
+            * I'm <turn to="pg1Oreo">Oreo The Warrior Priestess</turn>.<br>
+            * I'm <turn to="pg1Edge">xXxPussySlayer69xXx The Edgelord</turn>.<br>
+            * I'm <turn to="pg1Pitz">Pitz The Evil Rouge</turn>.<br>
         </page>
-        <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
-        <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
 
         <!-- Forest -->
         <page id="pg1Pitz">
-            This is a DLC, please transfer funds to my bank account to play this character.
-            Oh and you die.
+            This is a DLC, please transfer funds to my bank account to play this character.<br>
+            Oh, and you die.
             {{ story.endGame();}}
         </page>
         <page id="pg1Oreo">
