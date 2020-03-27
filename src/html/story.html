@@ -158,14 +158,19 @@
             My name is Gerald of Rivia, who are you?
             <br><br>
             (Hero) <br>
-            * I'm <turn to="pg1Oreo">Oreo The Warrior Priestess</turn>.<br>
-            * I'm <turn to="pg1Edge">xXxPussySlayer69xXx The Edgelord</turn>.<br>
+            * I'm <turn to="{{= story.getPageChar('p1') }}">Oreo The Warrior Priestess</turn>.<br>
+            * I'm <turn to="{{= story.getPageChar('p1') }}">xXxPussySlayer69xXx The Edgelord</turn>.<br>
+            * I'm <turn to="{{= story.getPageChar('p1') }}">Pitz The Evil Rouge</turn>.<br>
         </page>
-        <!-- * I'm <turn to="pg1Pitz">Pitz The Evil Rouge</turn>.<br> -->
         <!-- <p>Quite unsurprisingly, there is even an <interact with="dummyObject">object</interact> lying around.</p>
         <p>Looking around with more attention, you notice <turn to="otherPage">another page</turn></p> -->
 
         <!-- Forest -->
+        <page id="pg1Pitz">
+            This is a DLC, please transfer funds to my bank account to play this character.
+            Oh and you die.
+            {{ story.endGame();}}
+        </page>
         <page id="pg1Oreo">
             {{story.currChar = "Oreo";}}
             An ominous feeling takes hold.<br>
@@ -898,10 +903,13 @@
             So you're {{= story.currChar}}... She looks at your face intently, her strange red eyes seem to pierce right through you, you feel uncomfortable
             So I understand you're looking for the Green Enchantress, you'll need to get to the desert for that, what are you doing all the way here?<br>
             <br>
-            Hamburger quickly answers before you can, that you ran into some complications but you are well on your way to the desert.<br>
+            Hamburger quickly answers before you can, that you ran into some complications but that your party is well on their way to the desert.<br>
             (Ibex)<br>
-
-
+            I would help you get there, but unfortunately I can't spare the time right now, there's trouble I need to attend to.<br>
+            <br>
+            ({{= story.currChar}})<br>
+            * <turn to="">What trouble? Maybe we can help?</turn><br>
+            * <turn to="">Okay, can you just point us the way? We will get there...</turn><br>
         </page>
 
         <!-- Global Paragraphs -->
